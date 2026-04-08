@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión — AlphaVisualStudi</title>
+  <meta name="description" content="Accede al área de clientes de AlphaVisualStudi.">
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07080c;
+      --surface: #10131a;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e8eaef;
+      --muted: #8b93a7;
+      --accent: #ff2438;
+      --accent-soft: rgba(255, 36, 56, 0.15);
+      --glow: rgba(255, 36, 56, 0.38);
+      --radius: 14px;
+      --max: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Outfit", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    .gradient-orb {
+      position: fixed;
+      width: 60vw;
+      height: 60vw;
+      max-width: 900px;
+      max-height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+      top: -20%;
+      right: -15%;
+      filter: blur(80px);
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    header {
+      position: relative;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(7, 8, 12, 0.75);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      height: 2.35rem;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .logo-wordmark span {
+      color: var(--accent);
+    }
+
+    .back-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.65rem 1.25rem;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff3d4f, #d6081c);
+      color: #fff;
+      box-shadow: 0 4px 24px var(--glow);
+      width: 100%;
+      padding: 0.8rem 1.25rem;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 32px var(--glow);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1.5rem 3.5rem;
+    }
+
+    .login-panel {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .login-panel h1 {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(1.5rem, 4vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .login-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 1.75rem;
+    }
+
+    .login-card > .intro {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .field {
+      margin-bottom: 1.1rem;
+    }
+
+    .login-form label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .login-form input[type="email"],
+    .login-form input[type="password"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .login-form input:focus {
+      border-color: rgba(255, 36, 56, 0.55);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .login-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.35rem;
+    }
+
+    .login-remember {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .login-remember input {
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--accent);
+    }
+
+    .login-forgot {
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .login-forgot:hover {
+      text-decoration: underline;
+    }
+
+    .login-foot {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .login-foot a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-foot a:hover {
+      text-decoration: underline;
+    }
+
+    .login-msg {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(255, 36, 56, 0.28);
+    }
+
+    .login-msg.is-visible {
+      display: block;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="gradient-orb" aria-hidden="true"></div>
+
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <img class="logo-mark" src="assets/logo-icon.png" alt="" width="44" height="44" decoding="async">
+        <span class="logo-wordmark">Alpha<span>Visual</span> Studio</span>
+      </a>
+      <a class="back-link" href="index.html">← Volver al inicio</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="login-panel">
+      <h1>Iniciar sesión</h1>
+      <p class="login-sub">Área de clientes</p>
+      <div class="login-card">
+        <p class="intro">Revisa entregas, facturas y el estado de tus proyectos.</p>
+        <form class="login-form" id="login-form" action="#" method="post" novalidate>
+          <div class="field">
+            <label for="login-email">Correo electrónico</label>
+            <input type="email" id="login-email" name="email" autocomplete="email" required placeholder="tu@correo.com">
+          </div>
+          <div class="field">
+            <label for="login-password">Contraseña</label>
+            <input type="password" id="login-password" name="password" autocomplete="current-password" required placeholder="••••••••">
+          </div>
+          <div class="login-row">
+            <label class="login-remember">
+              <input type="checkbox" id="login-remember" name="remember" value="1">
+              Recordarme
+            </label>
+            <a class="login-forgot" href="index.html#contacto">¿Olvidaste tu contraseña?</a>
+          </div>
+          <button type="submit" class="btn btn-primary">Entrar</button>
+          <p class="login-msg" id="login-msg" role="status" aria-live="polite"></p>
+        </form>
+        <p class="login-foot">¿Aún no trabajas con nosotros? <a href="index.html#contacto">Solicita información</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> AlphaVisualStudi</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    (function () {
+      var form = document.getElementById("login-form");
+      var msg = document.getElementById("login-msg");
+      if (!form || !msg) return;
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+        
+        const fd = new FormData(form);
+        const data = Object.fromEntries(fd.entries());
+        msg.classList.remove("is-visible");
+        
+        try {
+          const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+          });
+          const json = await res.json();
+          if (!res.ok) throw new Error(json.error || "Error al iniciar sesión");
+          
+          localStorage.setItem("avs_token", json.token);
+          localStorage.setItem("avs_user", JSON.stringify(json.user));
+          
+          if (json.user.role === "admin") {
+            window.location.href = "admin.html";
+          } else if (json.user.role === "worker") {
+            window.location.href = "worker.html";
+          } else {
+            window.location.href = "frontend/client.html";
+          }
+        } catch (err) {
+          msg.textContent = err.message;
+          msg.classList.add("is-visible");
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

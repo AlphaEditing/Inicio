@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro — Alpha Visual Studio</title>
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/platform.css">
+  <style>
+    .auth-wrap { max-width: 420px; margin: 3rem auto; padding: 0 1.25rem; position: relative; z-index: 1; }
+    .auth-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; }
+    .auth-card h1 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.35rem; }
+    .auth-card .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .auth-card label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--muted); margin-bottom: 0.35rem; }
+    .auth-card input { width: 100%; padding: 0.65rem 0.85rem; border-radius: 10px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); margin-bottom: 1rem; font-family: inherit; }
+    .msg { display: none; margin-top: 1rem; padding: 0.75rem; border-radius: 10px; background: var(--accent-soft); color: var(--accent); font-size: 0.88rem; }
+    .msg.is-visible { display: block; }
+    .back { display: inline-block; margin-top: 1.25rem; color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="gradient-orb" aria-hidden="true"></div>
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <img class="logo-mark" src="assets/logo-icon.png" alt="" width="40" height="40">
+        <span class="logo-wordmark">Alpha<span>Visual</span> Studio</span>
+      </a>
+      <div class="header-actions">
+        <button type="button" class="theme-toggle" aria-label="Tema">☾</button>
+      </div>
+    </div>
+  </header>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <h1>Registro cliente</h1>
+      <p class="sub">Crea tu cuenta para carrito y pedidos</p>
+      <form id="f">
+        <label for="name">Nombre</label>
+        <input id="name" name="name" required autocomplete="name">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email">
+        <label for="password">Contraseña (mín. 8)</label>
+        <input id="password" name="password" type="password" required minlength="8" autocomplete="new-password">
+        <button type="submit" class="btn btn-primary" style="width:100%;">Registrarme</button>
+        <p class="msg" id="msg" role="alert"></p>
+      </form>
+      <a class="back" href="login.html">Ya tengo cuenta</a>
+    </div>
+    <a class="back" href="index.html">← Volver al inicio</a>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script>
+    document.getElementById("f").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var msg = document.getElementById("msg");
+      AVS.api("/api/auth/register", {
+        method: "POST",
+        body: {
+          name: document.getElementById("name").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          password: document.getElementById("password").value
+        }
+      })
+        .then(function (data) {
+          AVS.setSession(data.token, data.user);
+          window.location.href = "client.html";
+        })
+        .catch(function (err) {
+          msg.textContent = err.message;
+          msg.classList.add("is-visible");
+        });
+    });
+  </script>
+</body>
+</html>

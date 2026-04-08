@@ -1,0 +1,10 @@
+{
+  "name": "alpha-visual-studio",
+  "private": true,
+  "description": "Alpha Visual Studio — monorepo frontend + backend",
+  "scripts": {
+    "install:backend": "cd backend && npm install",
+    "init-db": "cd backend && npm run init-db",
+    "start": "cd backend && npm start"
+  }
+}

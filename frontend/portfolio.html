@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Alpha Visual Studio</title>
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/platform.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="gradient-orb" aria-hidden="true"></div>
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <img class="logo-mark" src="assets/logo-icon.png" alt="" width="40" height="40">
+        <span class="logo-wordmark">Alpha<span>Visual</span> Studio</span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">Inicio</a>
+        <a href="index.html#servicios">Servicios</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="theme-toggle" aria-label="Tema">☾</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section>
+      <p class="section-label">Trabajos</p>
+      <h1>Portfolio</h1>
+      <p style="color:var(--muted);max-width:44ch;margin-top:0.5rem;">Selección de piezas en imagen y video. El administrador sube nuevos proyectos desde el panel.</p>
+      <div id="grid" class="portfolio-grid"></div>
+      <p id="empty" style="display:none;color:var(--muted);margin-top:2rem;">Aún no hay elementos públicos. Sube archivos desde el panel de administración.</p>
+    </section>
+  </main>
+  <footer><p><a href="index.html" style="color:var(--accent);">← Inicio</a></p></footer>
+  <script src="js/theme.js"></script>
+  <script>
+    fetch("/api/portfolio")
+      .then(function (r) { return r.json(); })
+      .then(function (items) {
+        var g = document.getElementById("grid");
+        var empty = document.getElementById("empty");
+        if (!items.length) { empty.style.display = "block"; return; }
+        items.forEach(function (it) {
+          var card = document.createElement("article");
+          card.className = "portfolio-card";
+          var media;
+          if (it.media_type === "video") {
+            media = document.createElement("video");
+            media.src = it.url;
+            media.controls = true;
+            media.playsInline = true;
+          } else {
+            media = document.createElement("img");
+            media.src = it.url;
+            media.alt = it.title;
+            media.loading = "lazy";
+          }
+          var cap = document.createElement("div");
+          cap.className = "cap";
+          cap.textContent = it.title;
+          card.appendChild(media);
+          card.appendChild(cap);
+          g.appendChild(card);
+        });
+      })
+      .catch(function () {
+        document.getElementById("empty").textContent = "No se pudo cargar el portfolio.";
+        document.getElementById("empty").style.display = "block";
+      });
+  </script>
+</body>
+</html>

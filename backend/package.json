@@ -1,0 +1,24 @@
+{
+  "name": "alphavs-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Alpha Visual Studio — API Express + SQLite",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "init-db": "node scripts/init-db.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^11.0.3"
+  }
+}

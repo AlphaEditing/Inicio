@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trabajador — Alpha Visual Studio</title>
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/platform.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html"><img class="logo-mark" src="assets/logo-icon.png" alt="" width="36" height="36"><span class="logo-wordmark">Alpha<span>Visual</span> Studio</span></a>
+      <div class="header-actions">
+        <button type="button" class="theme-toggle" aria-label="Tema">☾</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="logout">Salir</button>
+      </div>
+    </div>
+  </header>
+  <div class="dash-layout">
+    <aside class="dash-side">
+      <a href="#tareas" class="is-active">Mis tareas</a>
+      <a href="#clientes">Clientes asignados</a>
+    </aside>
+    <div class="dash-main">
+      <h1 style="font-family:var(--font-display);">Panel trabajador</h1>
+      <p style="color:var(--muted);font-size:0.9rem;">Solo ves trabajos que el administrador te ha asignado.</p>
+
+      <h2 id="tareas" style="margin-top:2rem;font-size:1.1rem;">Tareas</h2>
+      <table class="dash-table" id="tasks-table">
+        <thead><tr><th>Título</th><th>Pedido</th><th>Cliente</th><th>Estado</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <h2 id="clientes" style="margin-top:2rem;font-size:1.1rem;">Clientes</h2>
+      <table class="dash-table" id="clients-table">
+        <thead><tr><th>Nombre</th><th>Email</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script>
+    (function () {
+      var u = AVS.getUser();
+      if (!u || u.role !== "worker") { window.location.href = "login.html"; return; }
+
+      document.getElementById("logout").addEventListener("click", function () {
+        AVS.setSession(null, null);
+        window.location.href = "index.html";
+      });
+
+      function loadTasks() {
+        AVS.api("/api/worker/tasks").then(function (rows) {
+          var tb = document.querySelector("#tasks-table tbody");
+          tb.innerHTML = "";
+          if (!rows.length) {
+            tb.innerHTML = "<tr><td colspan='5'>No hay tareas asignadas.</td></tr>";
+            return;
+          }
+          rows.forEach(function (t) {
+            var tr = document.createElement("tr");
+            var sel = "<select data-tid='" + t.id + "'>" +
+              ["pending", "in_progress", "done"].map(function (s) {
+                return "<option value='" + s + "'" + (t.status === s ? " selected" : "") + ">" + s + "</option>";
+              }).join("") + "</select>";
+            tr.innerHTML = "<td>" + t.title + "</td><td>" + (t.invoice_number || "") + "</td><td>" + t.client_name + "<br><small style='color:var(--muted)'>" + t.client_email + "</small></td><td>" + sel + "</td><td><button type='button' class='btn btn-sm btn-primary save-st' data-tid='" + t.id + "'>Guardar</button></td>";
+            tb.appendChild(tr);
+          });
+          tb.querySelectorAll(".save-st").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              var id = btn.getAttribute("data-tid");
+              var st = btn.closest("tr").querySelector("select").value;
+              AVS.api("/api/worker/tasks/" + id, { method: "PATCH", body: { status: st } })
+                .then(function () { loadTasks(); })
+                .catch(alert);
+            });
+          });
+        }).catch(function () {});
+      }
+
+      function loadClients() {
+        AVS.api("/api/worker/clients").then(function (rows) {
+          var tb = document.querySelector("#clients-table tbody");
+          tb.innerHTML = "";
+          rows.forEach(function (c) {
+            var tr = document.createElement("tr");
+            tr.innerHTML = "<td>" + c.name + "</td><td>" + c.email + "</td>";
+            tb.appendChild(tr);
+          });
+          if (!rows.length) tb.innerHTML = "<tr><td colspan='2'>Sin clientes asignados aún.</td></tr>";
+        }).catch(function () {});
+      }
+
+      loadTasks();
+      loadClients();
+    })();
+  </script>
+</body>
+</html>

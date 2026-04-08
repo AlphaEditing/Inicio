@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi área — Alpha Visual Studio</title>
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/platform.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html"><img class="logo-mark" src="assets/logo-icon.png" alt="" width="36" height="36"><span class="logo-wordmark">Alpha<span>Visual</span> Studio</span></a>
+      <div class="header-actions">
+        <button type="button" class="theme-toggle" aria-label="Tema">☾</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="logout">Salir</button>
+      </div>
+    </div>
+  </header>
+  <div class="dash-layout">
+    <aside class="dash-side">
+      <a href="#carrito" class="is-active">Carrito</a>
+      <a href="#pedidos">Pedidos</a>
+      <a href="#avisos">Notificaciones</a>
+      <a href="index.html#servicios">Más servicios</a>
+    </aside>
+    <div class="dash-main">
+      <h1 style="font-family:var(--font-display);font-size:1.5rem;">Área cliente</h1>
+      <p style="color:var(--muted);font-size:0.9rem;margin-top:0.35rem;">Hola, <span id="uname"></span></p>
+
+      <h2 id="carrito" style="margin-top:2rem;font-size:1.1rem;">Carrito</h2>
+      <table class="dash-table" id="cart-table">
+        <thead><tr><th>Servicio</th><th>Cant.</th><th>Precio</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
+        <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.88rem;color:var(--muted);">
+          Cupón <input id="coupon" placeholder="WELCOME10" style="padding:0.4rem 0.6rem;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);">
+        </label>
+        <button type="button" class="btn btn-primary" id="checkout">Tramitar pedido</button>
+      </div>
+      <p id="checkout-msg" style="margin-top:0.75rem;font-size:0.88rem;color:var(--accent);"></p>
+
+      <h2 id="pedidos" style="margin-top:2.5rem;font-size:1.1rem;">Mis pedidos</h2>
+      <table class="dash-table" id="orders-table">
+        <thead><tr><th>Factura</th><th>Fecha</th><th>Total</th><th>Estado</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <h2 id="avisos" style="margin-top:2.5rem;font-size:1.1rem;">Notificaciones</h2>
+      <ul id="notif-list" style="list-style:none;font-size:0.88rem;color:var(--muted);"></ul>
+    </div>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script>
+    (function () {
+      var u = AVS.getUser();
+      if (!u || u.role !== "client") {
+        window.location.href = "login.html";
+        return;
+      }
+      document.getElementById("uname").textContent = u.name;
+
+      function eur(n) {
+        return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(n);
+      }
+
+      function loadCart() {
+        AVS.api("/api/cart")
+          .then(function (rows) {
+            var tb = document.querySelector("#cart-table tbody");
+            tb.innerHTML = "";
+            var sub = 0;
+            rows.forEach(function (r) {
+              sub += r.price_eur * r.quantity;
+              var tr = document.createElement("tr");
+              tr.innerHTML = "<td>" + r.name_es + "</td><td>" + r.quantity + "</td><td>" + eur(r.price_eur * r.quantity) + "</td><td><button type='button' class='btn btn-ghost btn-sm' data-del='" + r.serviceId + "'>Quitar</button></td>";
+              tb.appendChild(tr);
+            });
+            tb.querySelectorAll("[data-del]").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                AVS.api("/api/cart/" + btn.getAttribute("data-del"), { method: "DELETE" }).then(loadCart).catch(alert);
+              });
+            });
+            if (!rows.length) tb.innerHTML = "<tr><td colspan='4'>Carrito vacío. Añade desde la página de servicios.</td></tr>";
+          })
+          .catch(function () {});
+      }
+
+      function loadOrders() {
+        AVS.api("/api/orders/me")
+          .then(function (rows) {
+            var tb = document.querySelector("#orders-table tbody");
+            tb.innerHTML = "";
+            rows.forEach(function (o) {
+              var tr = document.createElement("tr");
+              tr.innerHTML = "<td>" + o.invoice_number + "</td><td>" + (o.created_at || "").slice(0, 10) + "</td><td>" + eur(o.total_eur) + "</td><td>" + o.status + "</td>";
+              tb.appendChild(tr);
+            });
+            if (!rows.length) tb.innerHTML = "<tr><td colspan='4'>Sin pedidos aún.</td></tr>";
+          })
+          .catch(function () {});
+      }
+
+      function loadNotif() {
+        AVS.api("/api/notifications")
+          .then(function (rows) {
+            var ul = document.getElementById("notif-list");
+            ul.innerHTML = "";
+            rows.forEach(function (n) {
+              var li = document.createElement("li");
+              li.style.marginBottom = "0.5rem";
+              li.textContent = (n.read_flag ? "" : "● ") + n.body + " — " + (n.created_at || "").slice(0, 16);
+              ul.appendChild(li);
+            });
+          })
+          .catch(function () {});
+      }
+
+      document.getElementById("checkout").addEventListener("click", function () {
+        var msg = document.getElementById("checkout-msg");
+        msg.textContent = "";
+        var code = document.getElementById("coupon").value.trim() || undefined;
+        AVS.api("/api/orders/checkout", { method: "POST", body: { couponCode: code } })
+          .then(function (o) {
+            msg.textContent = "Pedido " + o.invoice_number + " creado. Total " + eur(o.total_eur);
+            loadCart();
+            loadOrders();
+            loadNotif();
+          })
+          .catch(function (e) {
+            msg.textContent = e.message;
+          });
+      });
+
+      document.getElementById("logout").addEventListener("click", function () {
+        AVS.setSession(null, null);
+        window.location.href = "index.html";
+      });
+
+      loadCart();
+      loadOrders();
+      loadNotif();
+    })();
+  </script>
+</body>
+</html>

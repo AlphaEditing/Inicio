@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Trabajador — AlphaVisualStudi</title>
+  <meta name="description" content="Panel de control para trabajadores de AlphaVisualStudi.">
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07080c;
+      --surface: #10131a;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e8eaef;
+      --muted: #8b93a7;
+      --accent: #ff2438;
+      --accent-soft: rgba(255, 36, 56, 0.15);
+      --glow: rgba(255, 36, 56, 0.38);
+      --radius: 14px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Outfit", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    .noise {
+      pointer-events: none; position: fixed; inset: 0; opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+    header {
+      position: relative; z-index: 100; backdrop-filter: blur(12px); background: rgba(7, 8, 12, 0.75);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: var(--max); margin: 0 auto; padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .logo {
+      display: inline-flex; align-items: center; gap: 0.65rem; font-family: "Syne", sans-serif;
+      font-weight: 800; font-size: 1.15rem; color: var(--text); text-decoration: none;
+    }
+    .logo-mark { height: 2.35rem; width: auto; flex-shrink: 0; }
+    .logo-wordmark span { color: var(--accent); }
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; padding: 0.65rem 1.25rem;
+      border-radius: 999px; font-family: inherit; font-size: 0.9rem; font-weight: 600; text-decoration: none;
+      border: none; cursor: pointer; transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary { background: linear-gradient(135deg, #ff3d4f, #d6081c); color: #fff; box-shadow: 0 4px 24px var(--glow); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 32px var(--glow); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: rgba(255, 36, 56, 0.45); color: var(--accent); }
+    main { position: relative; z-index: 1; flex: 1; padding: 2.5rem 1.5rem 3.5rem; max-width: var(--max); margin: 0 auto; width: 100%; }
+    h1 { font-family: "Syne", sans-serif; font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 700; margin-bottom: 0.5rem; }
+    .lead { color: var(--muted); margin-bottom: 2rem; font-size: 1.05rem; }
+    
+    .panel-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; margin-bottom: 2rem; }
+    .panel-block h2 { font-family: "Syne", sans-serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem; }
+    
+    .tasks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+    .task-card { background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+    .task-title { font-weight: 600; font-size: 1.05rem; color: var(--accent); margin-bottom: 0.25rem; }
+    .task-info { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .task-earnings {
+      display: inline-block; background: var(--accent-soft); color: var(--accent);
+      padding: 0.2rem 0.6rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; margin-bottom: 1rem;
+    }
+    
+    .upload-form { display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+    .upload-form input[type="file"] { font-size: 0.85rem; color: var(--muted); }
+    .file-upload-wrapper { border: 1px dashed var(--border); padding: 1rem; border-radius: 8px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+    .file-upload-wrapper:hover { border-color: var(--accent); }
+    .upload-msg { display: none; padding: 0.5rem; border-radius: 6px; font-size: 0.85rem; margin-top: 0.5rem; }
+    .upload-msg.success { background: rgba(30, 200, 100, 0.1); color: #2ecc71; border: 1px solid rgba(30, 200, 100, 0.3); display: block; }
+    .upload-msg.error { background: var(--accent-soft); color: var(--accent); border: 1px solid rgba(255, 36, 56, 0.3); display: block; }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="gradient-orb" aria-hidden="true" style="top: -30%; right: -20%;"></div>
+
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <img class="logo-mark" src="assets/logo-icon.png" alt="" width="44" height="44">
+        <span class="logo-wordmark">Alpha<span>Visual</span> Studio</span>
+      </a>
+      <div class="header-right">
+        <span style="font-size: 0.9rem; font-weight: 500;" id="user-name"></span>
+        <button type="button" class="btn btn-ghost" id="logout-btn">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <h1>Panel de Trabajo</h1>
+    <p class="lead">Bienvenido al área de trabajadores. Aquí puedes ver y completar tus asignaciones.</p>
+
+    <div class="panel-block">
+      <h2>Tus Tareas Asignadas</h2>
+      <div class="tasks-grid" id="tasks-container">
+        <!-- Tareas cargadas con JS -->
+        <p style="color:var(--muted); font-size: 0.9rem;">Cargando tareas...</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const token = localStorage.getItem("avs_token");
+      const userStr = localStorage.getItem("avs_user");
+      
+      if (!token || !userStr) {
+        window.location.href = "login.html";
+        return;
+      }
+      
+      const user = JSON.parse(userStr);
+      if (user.role !== "worker") {
+        window.location.href = "login.html";
+        return;
+      }
+
+      document.getElementById("user-name").textContent = "Hola, " + user.name;
+      
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.removeItem("avs_token");
+        localStorage.removeItem("avs_user");
+        window.location.href = "login.html";
+      });
+
+      const container = document.getElementById("tasks-container");
+
+      async function fetchTasks() {
+        try {
+          // El fetch al backend en el puerto donde corre o relativo si está servido en el mismo path
+          const res = await fetch("/api/worker/tasks", {
+            headers: { "Authorization": "Bearer " + token }
+          });
+          if (!res.ok) throw new Error("Acceso denegado o sesión caducada");
+          
+          const tasks = await res.json();
+          renderTasks(tasks);
+        } catch (e) {
+          container.innerHTML = `<p style="color:var(--accent);">${e.message}</p>`;
+        }
+      }
+
+      function renderTasks(tasks) {
+        container.innerHTML = "";
+        if (tasks.length === 0) {
+          container.innerHTML = "<p style='color:var(--muted);'>No tienes tareas asignadas por el momento.</p>";
+          return;
+        }
+
+        tasks.forEach(task => {
+          const card = document.createElement("div");
+          card.className = "task-card";
+          
+          let earningsText = "Comisión no definida";
+          if (task.earnings_eur !== null && task.earnings_eur !== undefined) {
+             earningsText = `Ganancia: ${task.earnings_eur.toFixed(2)}€ (${task.commission_percentage}%)`;
+          }
+
+          let actionContent = "";
+          if (task.status === "done") {
+             actionContent = `<p style="color:#2ecc71; font-weight:600; font-size:0.9rem;">✓ Tarea Completada</p>`;
+          } else {
+             actionContent = `
+               <form class="upload-form" data-task-id="${task.id}">
+                 <div class="file-upload-wrapper">
+                   <input type="file" name="file" required accept="*/*" style="width: 100%;">
+                 </div>
+                 <button type="submit" class="btn btn-primary" style="padding: 0.4rem 1rem;">Subir archivo final</button>
+                 <div class="upload-msg"></div>
+               </form>
+             `;
+          }
+
+          let deadlineText = task.deadline_at ? `<b>Fecha Límite:</b> ${task.deadline_at}` : "Sin fecha límite asignada";
+          let sourceLink = task.source_file_path ? `<a href="/uploads/${task.source_file_path}" target="_blank" style="color:var(--text); text-decoration:underline;">📥 Descargar Recursos (Base)</a>` : "<span style='color:var(--muted)'>Aún no hay recursos base</span>";
+          let feedbackAlert = task.admin_feedback ? `<div style="background:rgba(255, 200, 0, 0.1); border: 1px solid rgba(255, 200, 0, 0.3); padding:0.75rem; border-radius:6px; color:#f1c40f; margin-bottom:1rem; font-size:0.85rem;"><b>Comentario del Admin:</b><br>${task.admin_feedback}</div>` : "";
+
+          card.innerHTML = `
+            <div class="task-title">${task.title}</div>
+            <div class="task-info">
+              Pedido: ${task.invoice_number || 'S/N'} <br>
+              Estado: <span style="text-transform: capitalize;">${task.status}</span> <br>
+              ${deadlineText} <br>
+              ${sourceLink}
+            </div>
+            ${feedbackAlert}
+            <div class="task-earnings">${earningsText}</div>
+            
+            <div style="margin-bottom: 1rem;">
+               <label style="font-size: 0.85rem; color: var(--muted); display: block; margin-bottom: 0.25rem;">Tu Progreso: <span id="prog-val-${task.id}">${task.progress_percentage || 0}%</span></label>
+               <input type="range" min="0" max="100" value="${task.progress_percentage || 0}" class="prog-slider" data-tid="${task.id}" style="width:100%; cursor:pointer;">
+               <button class="btn btn-ghost btn-sm save-prog" data-tid="${task.id}" style="margin-top:0.5rem; width:100%; display:none;">Confirmar %</button>
+            </div>
+
+            ${actionContent}
+          `;
+          
+          container.appendChild(card);
+        });
+
+        // Event Listeners for progress
+        document.querySelectorAll(".prog-slider").forEach(slider => {
+           const tid = slider.getAttribute("data-tid");
+           const btn = slider.parentElement.querySelector(".save-prog");
+           const valSpan = document.getElementById("prog-val-" + tid);
+           
+           slider.addEventListener("input", () => {
+              valSpan.textContent = slider.value + "%";
+              btn.style.display = "inline-flex";
+           });
+
+           btn.addEventListener("click", async () => {
+              try {
+                 btn.textContent = "Guardando...";
+                 await fetch("/api/worker/tasks/" + tid, {
+                    method: "PATCH",
+                    headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
+                    body: JSON.stringify({ progress_percentage: slider.value })
+                 });
+                 btn.textContent = "¡Guardado!";
+                 setTimeout(() => btn.style.display = "none", 1500);
+              } catch(e) {
+                 btn.textContent = "Error";
+              }
+           });
+        });
+
+        // Event Listeners for uploads
+        document.querySelectorAll(".upload-form").forEach(form => {
+          form.addEventListener("submit", async (e) => {
+             e.preventDefault();
+             const taskId = form.getAttribute("data-task-id");
+             const msgDiv = form.querySelector(".upload-msg");
+             const btn = form.querySelector('button[type="submit"]');
+             
+             msgDiv.className = "upload-msg";
+             msgDiv.textContent = "Subiendo archivo...";
+             msgDiv.style.display = "block";
+             btn.disabled = true;
+
+             const fd = new FormData(form);
+             try {
+                const uploadRes = await fetch(`/api/worker/tasks/${taskId}/complete`, {
+                  method: "POST",
+                  headers: { "Authorization": "Bearer " + token },
+                  body: fd
+                });
+                
+                if (!uploadRes.ok) throw new Error("Error al subir archivo");
+                
+                msgDiv.className = "upload-msg success";
+                msgDiv.textContent = "¡Archivo subido correctamente!";
+                setTimeout(() => fetchTasks(), 1500);
+             } catch (err) {
+                msgDiv.className = "upload-msg error";
+                msgDiv.textContent = err.message;
+                btn.disabled = false;
+             }
+          });
+        });
+      }
+
+      fetchTasks();
+    });
+  </script>
+</body>
+</html>

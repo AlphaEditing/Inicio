@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlphaVisualStudi — Estudio visual y creativo</title>
+  <meta id="meta-desc" name="description" content="AlphaVisualStudi ofrece branding, motion design, producción audiovisual y experiencias digitales para marcas que quieren destacar.">
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07080c;
+      --surface: #10131a;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e8eaef;
+      --muted: #8b93a7;
+      --accent: #ff2438;
+      --accent-soft: rgba(255, 36, 56, 0.15);
+      --glow: rgba(255, 36, 56, 0.38);
+      --radius: 14px;
+      --max: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Outfit", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+
+    .gradient-orb {
+      position: fixed;
+      width: 60vw;
+      height: 60vw;
+      max-width: 900px;
+      max-height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+      top: -20%;
+      right: -15%;
+      filter: blur(80px);
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(7, 8, 12, 0.75);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      height: 2.35rem;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .logo-wordmark span {
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.65rem 1.25rem;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff3d4f, #d6081c);
+      color: #fff;
+      box-shadow: 0 4px 24px var(--glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 32px var(--glow);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(255, 36, 56, 0.45);
+      color: var(--accent);
+    }
+
+    .header-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .header-login {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.5rem 0.35rem;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .header-login:hover {
+      color: var(--accent);
+    }
+
+    .header-login--mobile {
+      display: none;
+    }
+
+    .locale-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .locale-controls select {
+      appearance: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.45rem 1.75rem 0.45rem 0.65rem;
+      border-radius: 10px;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b93a7'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.45rem center;
+      background-size: 0.85rem;
+      max-width: 130px;
+    }
+
+    .locale-controls select:hover,
+    .locale-controls select:focus {
+      border-color: rgba(255, 36, 56, 0.4);
+      outline: none;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .locale-section .locale-fx-detail {
+      color: var(--muted);
+      font-size: 0.92rem;
+      max-width: 52ch;
+      margin-top: 1rem;
+    }
+
+    .locale-section .fx-pill {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .locale-section .fx-pill.is-warn {
+      background: rgba(255, 180, 0, 0.12);
+      color: #fbbf24;
+    }
+
+    .locale-section .fx-pill.fx-updated {
+      animation: fxPillPulse 1.1s ease;
+    }
+
+    @keyframes fxPillPulse {
+      0% { box-shadow: 0 0 0 0 transparent; }
+      35% { box-shadow: 0 0 0 3px rgba(255, 36, 56, 0.45); }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+
+    .pricing-fx-hint {
+      margin-top: 0.65rem;
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.4;
+      max-width: 40rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 4.5rem 1.5rem;
+    }
+
+    .hero {
+      padding-top: 5rem;
+      padding-bottom: 4rem;
+    }
+
+    .hero-lockup {
+      display: block;
+      width: auto;
+      max-width: min(240px, 70vw);
+      max-height: clamp(108px, 24vw, 152px);
+      height: auto;
+      margin-bottom: 1.35rem;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(2.25rem, 5.5vw, 3.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      max-width: 16ch;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero p.lead {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 38ch;
+      margin-bottom: 2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.5rem;
+      max-width: 520px;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .hero-stats strong {
+      display: block;
+      font-family: "Syne", sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .hero-stats span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h2 {
+      font-family: "Syne", sans-serif;
+      font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+      max-width: 18ch;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 36, 56, 0.28);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-family: "Syne", sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .about {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        display: none;
+      }
+
+      .header-login--mobile {
+        display: inline;
+      }
+
+      .header-inner {
+        flex-wrap: wrap;
+      }
+
+      .locale-controls {
+        order: 4;
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-cta .btn-primary {
+        font-size: 0.8rem;
+        padding: 0.55rem 0.9rem;
+      }
+    }
+
+    .about-visual {
+      aspect-ratio: 3 / 4;
+      border-radius: var(--radius);
+      background: #000000;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(1.5rem, 4vw, 2.75rem);
+    }
+
+    .about-visual img {
+      width: auto;
+      max-width: min(92%, 240px);
+      max-height: min(420px, 58vh);
+      height: auto;
+      display: block;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .contact {
+      text-align: center;
+      padding-bottom: 5rem;
+    }
+
+    .contact-box {
+      max-width: 560px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+    }
+
+    .contact-box p {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-email {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .contact-email:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    body.is-modal-open {
+      overflow: hidden;
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      align-items: flex-start;
+      justify-content: center;
+      padding: 1rem;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .modal-backdrop.is-open {
+      display: flex;
+    }
+
+    .pricing-modal {
+      width: 100%;
+      max-width: 920px;
+      margin: auto;
+      background: linear-gradient(165deg, #e81222 0%, #a50a16 50%, #72060f 100%);
+      border-radius: 20px;
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.55);
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .pricing-modal__close {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.85rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(0, 0, 0, 0.25);
+      color: #fff;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 2;
+    }
+
+    .pricing-modal__close:hover {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .pricing-modal__head {
+      text-align: center;
+      padding: 2rem 3rem 1rem;
+      color: #fff;
+    }
+
+    .pricing-modal__brand {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.35rem, 4vw, 1.85rem);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .pricing-modal__sub {
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      opacity: 0.92;
+      font-weight: 600;
+    }
+
+    .pricing-modal__tagline {
+      font-size: 0.88rem;
+      margin-top: 0.35rem;
+      opacity: 0.85;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      padding: 0 1.25rem 1.25rem;
+    }
+
+    @media (max-width: 700px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pricing-modal__head {
+        padding: 2rem 2.75rem 1rem 1.25rem;
+      }
+    }
+
+    .price-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.2rem 1.3rem;
+      color: #9e0814;
+      box-shadow: 0 10px 36px rgba(0, 0, 0, 0.22);
+    }
+
+    .price-card h3 {
+      font-family: "Syne", sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+      border-bottom: 2px solid rgba(158, 8, 20, 0.2);
+      padding-bottom: 0.45rem;
+      color: #c0101c;
+    }
+
+    .price-list {
+      list-style: none;
+      font-size: 0.86rem;
+      line-height: 1.35;
+    }
+
+    .price-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.65rem;
+      padding: 0.38rem 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+      color: #5a050c;
+    }
+
+    .price-list li:last-child {
+      border-bottom: none;
+    }
+
+    .price-list .price-eur {
+      font-weight: 700;
+      color: #c0101c;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pricing-modal__foot {
+      padding: 0 1.25rem 1.5rem;
+      text-align: center;
+    }
+
+    .pricing-modal__foot .btn-alt {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.35rem;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      background: #fff;
+      color: #9e0814;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s;
+    }
+
+    .pricing-modal__foot .btn-alt:hover {
+      transform: translateY(-1px);
+    }
+
+    .pricing-modal__note {
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.75);
+      max-width: 36rem;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.45;
+    }
+
+    .chat-fab {
+      position: fixed;
+      bottom: 1.15rem;
+      right: 1.15rem;
+      z-index: 200;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff3d4f, #d6081c);
+      color: #fff;
+      box-shadow: 0 8px 28px var(--glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+
+    .chat-fab:hover {
+      transform: scale(1.04);
+    }
+
+    .chat-fab svg {
+      width: 26px;
+      height: 26px;
+      display: block;
+    }
+
+    .chat-fab__dot {
+      display: none;
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px #d6081c;
+    }
+
+    .chat-fab.has-unread .chat-fab__dot {
+      display: block;
+    }
+
+    .chat-fab {
+      position: relative;
+    }
+
+    .chat-panel {
+      position: fixed;
+      bottom: 5.5rem;
+      right: 1.15rem;
+      z-index: 199;
+      width: min(calc(100vw - 2.3rem), 392px);
+      height: min(72vh, 492px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 16px 56px rgba(0, 0, 0, 0.5);
+      flex-direction: column;
+      overflow: hidden;
+      display: none;
+    }
+
+    .chat-panel.is-open {
+      display: flex;
+    }
+
+    .chat-panel__head {
+      padding: 0.75rem 0.9rem;
+      background: linear-gradient(135deg, #ff3d4f, #d6081c);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.92rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-panel__head span {
+      font-size: 0.72rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .chat-panel__close {
+      background: rgba(0, 0, 0, 0.2);
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.15rem;
+      line-height: 1;
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .chat-row {
+      display: flex;
+      flex-direction: column;
+      max-width: 90%;
+    }
+
+    .chat-row--user {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .chat-row--mod {
+      align-self: flex-start;
+    }
+
+    .chat-bubble {
+      padding: 0.55rem 0.8rem;
+      border-radius: 12px;
+      font-size: 0.87rem;
+      line-height: 1.45;
+    }
+
+    .chat-bubble--mod {
+      background: rgba(255, 36, 56, 0.14);
+      border: 1px solid rgba(255, 36, 56, 0.28);
+    }
+
+    .chat-bubble--user {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--border);
+    }
+
+    .chat-meta {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+      padding: 0 0.2rem;
+    }
+
+    .chat-form {
+      display: flex;
+      gap: 0.45rem;
+      padding: 0.65rem;
+      border-top: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .chat-form input {
+      flex: 1;
+      min-width: 0;
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.88rem;
+    }
+
+    .chat-form button[type="submit"] {
+      padding: 0.6rem 0.9rem;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #ff3d4f, #d6081c);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .chat-mail {
+      display: block;
+      width: 100%;
+      margin-top: 0.35rem;
+      padding: 0.45rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .chat-mail:hover {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="gradient-orb" aria-hidden="true"></div>
+
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <img class="logo-mark" src="assets/logo-icon.png" alt="" width="44" height="44" decoding="async">
+        <span class="logo-wordmark">Alpha<span>Visual</span> Studio</span>
+      </a>
+      <nav aria-label="Principal">
+        <a href="#servicios" data-i18n="nav.services">Servicios</a>
+        <a href="#nosotros" data-i18n="nav.about">Nosotros</a>
+        <a href="login.html" data-i18n="nav.login">Iniciar sesión</a>
+        <a href="register.html" data-i18n="nav.register">Registro</a>
+        <a href="#contacto" data-i18n="nav.contact">Contacto</a>
+      </nav>
+      <div class="locale-controls" role="group" aria-labelledby="locale-region-label">
+        <span id="locale-region-label" class="visually-hidden" data-i18n="locale.controlsAria">Idioma y moneda</span>
+        <label class="visually-hidden" for="lang-select" data-i18n="locale.langLabel">Idioma</label>
+        <select id="lang-select" aria-label="Idioma"></select>
+        <label class="visually-hidden" for="currency-select" data-i18n="locale.currencyLabel">Moneda</label>
+        <select id="currency-select" aria-label="Moneda"></select>
+      </div>
+      <div class="header-cta">
+        <a class="header-login header-login--mobile" href="login.html" data-i18n="nav.login">Iniciar sesión</a>
+        <button type="button" class="btn btn-primary js-open-pricing" data-i18n="cta.quote">Solicitar presupuesto</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <img class="hero-lockup" src="assets/logo-full.png" alt="" width="240" height="324" decoding="async" aria-hidden="true">
+      <p class="hero-badge" data-i18n="hero.badge">Estudio creativo</p>
+      <h1 id="hero-title" data-i18n="hero.h1">Imagen que convierte. Historias que se ven.</h1>
+      <p class="lead" data-i18n="hero.lead">Diseño de marca, motion graphics y producción visual para proyectos que necesitan claridad, estilo y impacto desde el primer frame.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#servicios" data-i18n="hero.cta1">Ver servicios</a>
+        <a class="btn btn-ghost" href="#contacto" data-i18n="hero.cta2">Hablemos</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <strong>+120</strong>
+          <span data-i18n="hero.stat1">Proyectos entregados</span>
+        </div>
+        <div>
+          <strong>24h</strong>
+          <span data-i18n="hero.stat2">Respuesta inicial media</span>
+        </div>
+        <div>
+          <strong>100%</strong>
+          <span data-i18n="hero.stat3">Enfoque en calidad</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicios" aria-labelledby="servicios-title">
+      <p class="section-label" data-i18n="serv.label">Qué hacemos</p>
+      <h2 id="servicios-title" data-i18n="serv.h2">Servicios pensados para marcas exigentes</h2>
+      <div class="services-grid">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">◆</div>
+          <h3 data-i18n="serv.c1t">Identidad y branding</h3>
+          <p data-i18n="serv.c1p">Logotipo, paleta, tipografía y manual de marca. Una base coherente para que todo lo demás encaje.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">▶</div>
+          <h3 data-i18n="serv.c2t">Motion y video</h3>
+          <p data-i18n="serv.c2p">Animación 2D/3D, piezas para redes, intros y contenido promocional con ritmo y mensaje claro.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">◎</div>
+          <h3 data-i18n="serv.c3t">Dirección de arte digital</h3>
+          <p data-i18n="serv.c3p">Banners, landings, UI visual y sistemas gráficos listos para desarrollo o campañas.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">◇</div>
+          <h3 data-i18n="serv.c4t">Packaging y presentaciones</h3>
+          <p data-i18n="serv.c4p">Diseño de envases mockups y decks de inversión o ventas con narrativa visual sólida.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="nosotros" aria-labelledby="nosotros-title">
+      <p class="section-label" data-i18n="about.label">AlphaVisualStudi</p>
+      <h2 id="nosotros-title" data-i18n="about.h2">Menos ruido, más intención</h2>
+      <div class="about">
+        <div class="about-visual">
+          <img src="assets/logo-full.png" alt="" width="260" height="351" decoding="async" data-i18n-alt="about.imgAlt">
+        </div>
+        <div class="about-text">
+          <p data-i18n="about.p1">Somos un estudio compacto: menos capas, más criterio. Trabajamos codo a codo contigo desde el brief hasta la entrega final, con revisiones claras y plazos realistas.</p>
+          <p data-i18n="about.p2">Si buscas un partner visual que entienda tu producto y lo traduzca en piezas memorables, estamos listos cuando tú lo estés.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="localizacion" class="locale-section" aria-labelledby="localizacion-title">
+      <p class="section-label" data-i18n="locale.sectionLabel">Regional</p>
+      <h2 id="localizacion-title" data-i18n="locale.title">Idioma y moneda</h2>
+      <p data-i18n="locale.intro">Elige arriba el idioma y la moneda de visualización. Los precios se calculan siempre a partir del euro (EUR): usamos tipos de referencia y un pequeño margen de cobertura para no perder valor si el cambio fluctúa.</p>
+      <p class="locale-fx-detail" data-i18n="locale.detail">El margen se aplica por encima del cambio del mercado (BCE vía Frankfurter). Es orientativo: el presupuesto final puede incluir IVA u otros conceptos según tu país.</p>
+      <p class="locale-fx-detail" data-i18n="locale.pollNote">Los tipos se consultan en vivo de forma periódica.</p>
+      <p class="fx-pill" id="fx-status-pill" aria-live="polite">…</p>
+    </section>
+
+    <section id="contacto" class="contact" aria-labelledby="contacto-title">
+      <p class="section-label" data-i18n="contact.label">Contacto</p>
+      <h2 id="contacto-title" data-i18n="contact.h2">Cuéntanos tu proyecto</h2>
+      <div class="contact-box" style="text-align: left;">
+        <p style="text-align: center; margin-bottom: 2rem;" data-i18n="contact.p">Envíanos un resumen, referencias y plazo deseado. Te respondemos con propuesta y siguiente paso.</p>
+        
+        <form style="display: flex; flex-direction: column; gap: 1rem;" id="mailto-form">
+          <div>
+            <label style="font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-bottom: 0.25rem; display: block;">Asunto o Proyecto</label>
+            <input type="text" id="mail-subject" required class="form-input" style="width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: inherit;">
+          </div>
+          <div>
+            <label style="font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-bottom: 0.25rem; display: block;">Resumen (Formato, Plazo, Presupuesto)</label>
+            <textarea id="mail-body" rows="4" required class="form-input" style="width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: inherit; resize: vertical;"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; justify-content: center; width: 100%;">Redactar Correo Directo</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem;">
+          <strong style="color: var(--muted); font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">O contáctanos manualmente:</strong>
+          <a class="contact-email" href="mailto:hola@alphavisualstudi.com">hola@alphavisualstudi.com</a>
+        </p>
+      </div>
+      
+      <script>
+        document.getElementById("mailto-form").addEventListener("submit", function(e) {
+          e.preventDefault();
+          var subject = encodeURIComponent(document.getElementById("mail-subject").value);
+          var bodyContent = document.getElementById("mail-body").value;
+          var body = encodeURIComponent("¡Hola Alpha Visual Studio!\n\nTe presento mi proyecto:\n" + bodyContent + "\n\nQuedo a la espera de vuestra respuesta.");
+          window.location.href = "mailto:hola@alphavisualstudi.com?subject=" + subject + "&body=" + body;
+        });
+      </script>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> AlphaVisualStudi. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+  </footer>
+
+  <div class="modal-backdrop" id="pricing-modal" role="dialog" aria-modal="true" aria-labelledby="pricing-title" aria-hidden="true">
+    <div class="pricing-modal">
+      <button type="button" class="pricing-modal__close" id="pricing-modal-close" data-i18n-aria="pricing.closeAria">×</button>
+      <div class="pricing-modal__head">
+        <p id="pricing-title" class="pricing-modal__brand" data-i18n="pricing.brand">ALPHAEDITING</p>
+        <p class="pricing-modal__sub" data-i18n="pricing.sub">Tabla de precios y servicios</p>
+        <p class="pricing-modal__tagline" data-i18n="pricing.tagline">AlphaVisualStudi · rangos orientativos, presupuesto final según brief</p>
+      </div>
+      <div class="pricing-grid">
+        <article class="price-card">
+          <h3 data-i18n="pricing.cat.graphic">Diseño gráfico</h3>
+          <ul class="price-list">
+            <li><span data-i18n="price.logo">Logo</span> <span class="js-price-range" data-min="5" data-max="10"></span></li>
+            <li><span data-i18n="price.thumb">Miniaturas YouTube / Twitch</span> <span class="js-price-range" data-min="5" data-max="20"></span></li>
+            <li><span data-i18n="price.stream">Diseño para streaming</span> <span class="js-price-range" data-min="10" data-max="60"></span></li>
+            <li><span data-i18n="price.social">Diseño para redes sociales</span> <span class="js-price-range" data-min="5" data-max="50"></span></li>
+          </ul>
+        </article>
+        <article class="price-card">
+          <h3 data-i18n="pricing.cat.video">Edición de video</h3>
+          <ul class="price-list">
+            <li><span data-i18n="price.yt20">Video YouTube (~20 min)</span> <span class="js-price-range" data-min="20" data-max="60"></span></li>
+            <li><span data-i18n="price.short">YouTube Short</span> <span class="js-price-range" data-min="5" data-max="30"></span></li>
+            <li><span data-i18n="price.tt">Video TikTok</span> <span class="js-price-range" data-min="5" data-max="30"></span></li>
+            <li><span data-i18n="price.ig">Video Instagram</span> <span class="js-price-range" data-min="5" data-max="25"></span></li>
+          </ul>
+        </article>
+        <article class="price-card">
+          <h3 data-i18n="pricing.cat.dev">Developer</h3>
+          <ul class="price-list">
+            <li><span data-i18n="price.obs">Configuración OBS</span> <span class="js-price-range" data-min="10" data-max="50"></span></li>
+            <li><span data-i18n="price.discord">Configuración Discord</span> <span class="js-price-range" data-min="5" data-max="50"></span></li>
+            <li><span data-i18n="price.sd">Configuración Stream Deck</span> <span class="js-price-range" data-min="5" data-max="50"></span></li>
+            <li><span data-i18n="price.web">Diseño web</span> <span class="js-price-range" data-min="5" data-max="50"></span></li>
+          </ul>
+        </article>
+        <article class="price-card">
+          <h3 data-i18n="pricing.cat.hourly">Precio por hora</h3>
+          <ul class="price-list">
+            <li><span data-i18n="price.phDesign">Diseño gráfico</span> <span class="js-price-range" data-min="20" data-max="50" data-hourly="1"></span></li>
+            <li><span data-i18n="price.phEdit">Edición de video</span> <span class="js-price-range" data-min="25" data-max="60" data-hourly="1"></span></li>
+            <li><span data-i18n="price.phDev">Developer</span> <span class="js-price-range" data-min="20" data-max="50" data-hourly="1"></span></li>
+          </ul>
+        </article>
+      </div>
+      <div class="pricing-modal__foot">
+        <a class="btn-alt" id="pricing-mailto" href="mailto:hola@alphavisualstudi.com?subject=Presupuesto%20AlphaVisualStudi" data-i18n="pricing.footerBtn">Pedir presupuesto por correo</a>
+        <p class="pricing-modal__note" data-i18n="pricing.note">Precios sin IVA según caso. Usa el chat con moderación o el correo para cerrar alcance y plazos.</p>
+        <p class="pricing-fx-hint" id="pricing-fx-hint" data-i18n="pricing.fxHint">Tipos con margen de cobertura sobre el EUR.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat en vivo con moderadores 24/7: registra una cuenta en https://www.tawk.to y pega aquí su script antes de </body>; puedes ocultar el widget .chat-fab si usas solo Tawk. -->
+
+  <button type="button" class="chat-fab" id="chat-fab" aria-expanded="false" aria-controls="chat-panel" title="Abrir chat con moderación">
+    <span class="chat-fab__dot" aria-hidden="true"></span>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+    </svg>
+  </button>
+
+  <div class="chat-panel" id="chat-panel" role="region" data-i18n-aria="chat.panelAria">
+    <div class="chat-panel__head">
+      <div>
+        <span data-i18n="chat.title">Moderación</span>
+        <div><span data-i18n="chat.sub">Orientación rápida + correo a moderación; chat en vivo requiere conectar un servicio (Tawk, etc.)</span></div>
+      </div>
+      <button type="button" class="chat-panel__close" id="chat-close" data-i18n-aria="chat.closeAria">×</button>
+    </div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <form class="chat-form" id="chat-form" autocomplete="off">
+      <input type="text" id="chat-input" name="message" maxlength="2000" placeholder="Escribe tu mensaje…" data-i18n-placeholder="chat.placeholder" data-i18n-aria="chat.inputAria">
+      <button type="submit" data-i18n="chat.send">Enviar</button>
+    </form>
+    <button type="button" class="chat-mail" id="chat-send-mail" data-i18n="chat.mail">Enviar conversación por correo</button>
+  </div>
+
+  <script>
+    (function () {
+      var FX_BUFFER = 0.04;
+      var BUFPCT = Math.round(FX_BUFFER * 100);
+      var CONTACT_EMAIL = "hola@alphavisualstudi.com";
+      var LS_LANG = "avs_lang";
+      var LS_CUR = "avs_currency";
+
+      var FALLBACK_RATES = {
+        USD: 1.08,
+        GBP: 0.86,
+        MXN: 18.4,
+        COP: 4200,
+        BRL: 5.9,
+        CHF: 0.97,
+        CAD: 1.47,
+        AUD: 1.66,
+        PLN: 4.32,
+        JPY: 162
+      };
+
+      var I18N = {
+        es: {
+          "doc.title": "AlphaVisualStudi — Estudio visual y creativo",
+          "doc.desc": "AlphaVisualStudi ofrece branding, motion design, producción audiovisual y experiencias digitales para marcas que quieren destacar.",
+          "nav.services": "Servicios",
+          "nav.about": "Nosotros",
+          "nav.login": "Iniciar sesión",
+          "nav.contact": "Contacto",
+          "cta.quote": "Solicitar presupuesto",
+          "locale.controlsAria": "Idioma y moneda",
+          "locale.langLabel": "Idioma",
+          "locale.currencyLabel": "Moneda",
+          "locale.sectionLabel": "Regional",
+          "locale.title": "Idioma y moneda",
+          "locale.intro": "Elige en la cabecera el idioma y la moneda de visualización. Los precios parten siempre del euro (EUR): aplicamos el tipo de referencia del mercado (BCE vía Frankfurter) más un margen de cobertura para no perder valor frente a fluctuaciones.",
+          "locale.detail": "El margen es adicional al cambio spot y es configurable en el código (actualmente " + BUFPCT + "%). El presupuesto definitivo puede incluir impuestos o ajustes según país y briefing.",
+          "locale.fxLoading": "Cargando tipos de cambio…",
+          "locale.fxOk": "Tipos BCE ({date}). EUR → otras divisas con +" + BUFPCT + "% de cobertura. {live}",
+          "locale.fxFallback": "Sin API: tipos de respaldo. Margen +" + BUFPCT + "%. {live}",
+          "locale.fxLive": "Auto-actualización cada {sec}s. Última consulta: {time}",
+          "locale.fxRatesChanged": "Tipo de cambio actualizado; precios recalculados.",
+          "locale.pollNote": "La web pide tipos al servidor en vivo cada 30 s (y al volver a esta pestaña). Si el valor respecto al euro cambia, los precios del modal se actualizan solos. El BCE suele publicar un cierre diario; en días sin cambio oficial el número puede repetirse hasta la siguiente publicación.",
+          "hero.badge": "Estudio creativo",
+          "hero.h1": "Imagen que convierte. Historias que se ven.",
+          "hero.lead": "Diseño de marca, motion graphics y producción visual para proyectos que necesitan claridad, estilo y impacto desde el primer frame.",
+          "hero.cta1": "Ver servicios",
+          "hero.cta2": "Hablemos",
+          "hero.stat1": "Proyectos entregados",
+          "hero.stat2": "Respuesta inicial media",
+          "hero.stat3": "Enfoque en calidad",
+          "serv.label": "Qué hacemos",
+          "serv.h2": "Servicios pensados para marcas exigentes",
+          "nav.register": "Registro",
+          "serv.c1t": "Diseño Gráfico",
+          "serv.c1p": "Logotipos, miniaturas para YouTube/Twitch y diseño para redes sociales, adaptado a tu estilo.",
+          "serv.c2t": "Edición de Video",
+          "serv.c2p": "Videos dinámicos para YouTube, Shorts, TikTok e Instagram, manteniendo el ritmo y retención.",
+          "serv.c3t": "Configuraciones",
+          "serv.c3p": "Ajustamos y optimizamos OBS, Discord, Stream Deck y más para que sólo te preocupes de crear.",
+          "serv.c4t": "Diseño Web",
+          "serv.c4p": "Páginas web a tu medida, optimizadas para rendimiento y con un estilo visual impactante.",
+          "about.label": "AlphaVisualStudi",
+          "about.h2": "Menos ruido, más intención",
+          "about.imgAlt": "Logotipo Alpha Visual Studio",
+          "about.p1": "Somos un estudio compacto: menos capas, más criterio. Trabajamos codo a codo contigo desde el brief hasta la entrega final, con revisiones claras y plazos realistas.",
+          "about.p2": "Si buscas un partner visual que entienda tu producto y lo traduzca en piezas memorables, estamos listos cuando tú lo estés.",
+          "contact.label": "Contacto",
+          "contact.h2": "Cuéntanos tu proyecto",
+          "contact.p": "Envíanos un resumen, referencias y plazo deseado. Te respondemos con propuesta y siguiente paso.",
+          "contact.pricesBtn": "Ver precios y servicios",
+          "footer.rights": "Todos los derechos reservados.",
+          "pricing.closeAria": "Cerrar tabla de precios",
+          "pricing.brand": "ALPHAEDITING",
+          "pricing.sub": "Tabla de precios y servicios",
+          "pricing.tagline": "AlphaVisualStudi · rangos orientativos, presupuesto final según brief",
+          "pricing.cat.graphic": "Diseño gráfico",
+          "pricing.cat.video": "Edición de video",
+          "pricing.cat.dev": "Developer",
+          "pricing.cat.hourly": "Precio por hora",
+          "price.logo": "Logo",
+          "price.thumb": "Miniaturas YouTube / Twitch",
+          "price.stream": "Diseño para streaming",
+          "price.social": "Diseño para redes sociales",
+          "price.yt20": "Video YouTube (~20 min)",
+          "price.short": "YouTube Short",
+          "price.tt": "Video TikTok",
+          "price.ig": "Video Instagram",
+          "price.obs": "Configuración OBS",
+          "price.discord": "Configuración Discord",
+          "price.sd": "Configuración Stream Deck",
+          "price.web": "Diseño web",
+          "price.phDesign": "Diseño gráfico",
+          "price.phEdit": "Edición de video",
+          "price.phDev": "Developer",
+          "pricing.footerBtn": "Pedir presupuesto por correo",
+          "pricing.note": "Precios sin IVA según caso. Usa el chat con moderación o el correo para cerrar alcance y plazos.",
+          "pricing.fxHint": "Importes mostrados: EUR base o equivalente con +" + BUFPCT + "% sobre tipo BCE para cubrir variación de cambio.",
+          "pricing.hourSuffix": "/ h",
+          "pricing.mailSubject": "Presupuesto AlphaVisualStudi",
+          "chat.panelAria": "Ventana de chat con moderación",
+          "chat.title": "Moderación",
+          "chat.sub": "Ayuda automática + correo. Chat en vivo: integra Tawk u otro widget.",
+          "chat.closeAria": "Cerrar chat",
+          "chat.placeholder": "Escribe tu mensaje…",
+          "chat.inputAria": "Mensaje para moderación",
+          "chat.send": "Enviar",
+          "chat.mail": "Enviar conversación por correo",
+          "chat.fabTitle": "Abrir chat",
+          "chat.welcome": "Bienvenido. Escribe tu consulta; verás respuestas de ayuda. Para un moderador humano, usa «Enviar conversación por correo». No compartas contraseñas.",
+          "chat.metaYou": "Tú",
+          "chat.metaMod": "Moderación · auto",
+          "chat.mailSubject": "Chat web AlphaVisualStudi",
+          "chat.labelClient": "Cliente",
+          "chat.labelMod": "Moderación",
+          "chat.emptyTranscript": "(Sin conversación)",
+          "chat.mod0": "¡Hola! Equipo AlphaVisualStudi. ¿Qué servicio necesitas: diseño gráfico, edición, desarrollo o tarifa por hora?",
+          "chat.mod1": "Abre «Solicitar presupuesto» para ver precios en tu moneda (con margen sobre EUR). ¿Algo personalizado? Cuéntanos formato y plazo.",
+          "chat.mod2": "Para un presupuesto cerrado envía referencias. También puedes usar «Enviar conversación por correo».",
+          "chat.mod3": "Respuesta automática. Un moderador puede contestarte en: " + CONTACT_EMAIL
+        },
+        en: {
+          "doc.title": "AlphaVisualStudi — Visual creative studio",
+          "doc.desc": "AlphaVisualStudi offers branding, motion design, audiovisual production and digital experiences for brands that want to stand out.",
+          "nav.services": "Services",
+          "nav.about": "About",
+          "nav.login": "Log in",
+          "nav.contact": "Contact",
+          "cta.quote": "Request a quote",
+          "locale.controlsAria": "Language and currency",
+          "locale.langLabel": "Language",
+          "locale.currencyLabel": "Currency",
+          "locale.sectionLabel": "Regional",
+          "locale.title": "Language and currency",
+          "locale.intro": "Pick your language and display currency in the header. Prices are always based on euro (EUR): we use the market reference rate (ECB via Frankfurter) plus a coverage margin so we don’t lose value when FX moves.",
+          "locale.detail": "The margin is on top of the spot rate and is configurable in code (currently " + BUFPCT + "%). Your final quote may include taxes or adjustments by country and brief.",
+          "locale.fxLoading": "Loading exchange rates…",
+          "locale.fxOk": "ECB rates ({date}). EUR → FX with +" + BUFPCT + "% buffer. {live}",
+          "locale.fxFallback": "API offline: fallback rates. +" + BUFPCT + "% buffer. {live}",
+          "locale.fxLive": "Auto-refresh every {sec}s. Last fetch: {time}",
+          "locale.fxRatesChanged": "Exchange rate updated; prices recalculated.",
+          "locale.pollNote": "The site fetches live rates every 30 s (and when you return to this tab). If the EUR cross changes, modal prices update automatically. The ECB typically publishes once per business day; the figure may stay flat until the next release.",
+          "hero.badge": "Creative studio",
+          "hero.h1": "Image that converts. Stories that show.",
+          "hero.lead": "Brand design, motion graphics and visual production for projects that need clarity, style and impact from frame one.",
+          "hero.cta1": "See services",
+          "hero.cta2": "Let’s talk",
+          "hero.stat1": "Projects delivered",
+          "hero.stat2": "Typical first response",
+          "hero.stat3": "Quality first",
+          "serv.label": "What we do",
+          "serv.h2": "Services for demanding brands",
+          "nav.register": "Sign Up",
+          "serv.c1t": "Graphic Design",
+          "serv.c1p": "Logos, YouTube/Twitch thumbnails, and social media design customized to your brand style.",
+          "serv.c2t": "Video Editing",
+          "serv.c2p": "Dynamic and engaging videos for YouTube, Shorts, TikTok, and Instagram with high retention.",
+          "serv.c3t": "Tech Setups",
+          "serv.c3p": "We optimize OBS, Discord, and Stream Deck so you only have to focus on creating content.",
+          "serv.c4t": "Web Design",
+          "serv.c4p": "Custom websites tailored to your needs, built for performance and visual impact.",
+          "about.label": "AlphaVisualStudi",
+          "about.h2": "Less noise, more intent",
+          "about.imgAlt": "Alpha Visual Studio logo",
+          "about.p1": "We’re a compact studio: fewer layers, more judgment. We work with you from brief to final delivery with clear rounds and realistic deadlines.",
+          "about.p2": "If you want a visual partner that understands your product and turns it into memorable work, we’re ready when you are.",
+          "contact.label": "Contact",
+          "contact.h2": "Tell us about your project",
+          "contact.p": "Send a summary, references and desired timing—we’ll reply with next steps.",
+          "contact.pricesBtn": "See prices & services",
+          "footer.rights": "All rights reserved.",
+          "pricing.closeAria": "Close price list",
+          "pricing.brand": "ALPHAEDITING",
+          "pricing.sub": "Price & service table",
+          "pricing.tagline": "AlphaVisualStudi · indicative ranges, final quote depends on brief",
+          "pricing.cat.graphic": "Graphic design",
+          "pricing.cat.video": "Video editing",
+          "pricing.cat.dev": "Developer",
+          "pricing.cat.hourly": "Hourly rate",
+          "price.logo": "Logo",
+          "price.thumb": "YouTube / Twitch thumbnails",
+          "price.stream": "Streaming design",
+          "price.social": "Social media design",
+          "price.yt20": "YouTube video (~20 min)",
+          "price.short": "YouTube Short",
+          "price.tt": "TikTok video",
+          "price.ig": "Instagram video",
+          "price.obs": "OBS setup",
+          "price.discord": "Discord setup",
+          "price.sd": "Stream Deck setup",
+          "price.web": "Web design",
+          "price.phDesign": "Graphic design",
+          "price.phEdit": "Video editing",
+          "price.phDev": "Developer",
+          "pricing.footerBtn": "Request quote by email",
+          "pricing.note": "Prices excl. VAT as applicable. Use chat or email to confirm scope and timeline.",
+          "pricing.fxHint": "Amounts: EUR base or converted equivalent with +" + BUFPCT + "% on ECB reference to cover FX movement.",
+          "pricing.hourSuffix": "/ hr",
+          "pricing.mailSubject": "Quote request AlphaVisualStudi",
+          "chat.panelAria": "Moderation chat panel",
+          "chat.title": "Moderation",
+          "chat.sub": "Auto-help + email. Live chat: add Tawk or similar.",
+          "chat.closeAria": "Close chat",
+          "chat.placeholder": "Type your message…",
+          "chat.inputAria": "Message to moderators",
+          "chat.send": "Send",
+          "chat.mail": "Email this conversation",
+          "chat.fabTitle": "Open chat",
+          "chat.welcome": "Welcome. Ask anything; you’ll see auto-replies. For a human moderator, use “Email this conversation”. Don’t share passwords.",
+          "chat.metaYou": "You",
+          "chat.metaMod": "Mods · auto",
+          "chat.mailSubject": "AlphaVisualStudi web chat",
+          "chat.labelClient": "Client",
+          "chat.labelMod": "Moderation",
+          "chat.emptyTranscript": "(No messages yet)",
+          "chat.mod0": "Hi from AlphaVisualStudi. What do you need: design, editing, dev or hourly?",
+          "chat.mod1": "Open “Request a quote” to see prices in your currency (EUR base + buffer). Custom job? Tell us format and deadline.",
+          "chat.mod2": "For a firm quote, send references. You can also use “Email this conversation”.",
+          "chat.mod3": "Auto-reply. A human can answer at: " + CONTACT_EMAIL
+        }
+      };
+
+      var FX_POLL_MS = 30000;
+      var FX_CURRENCIES = ["USD", "GBP", "MXN", "COP", "BRL", "CHF", "CAD", "AUD", "PLN", "JPY"];
+      var fxPollTimer = null;
+
+      var state = {
+        lang: "es",
+        currency: "EUR",
+        rates: null,
+        rateDate: "",
+        liveOk: false,
+        lastFetchTime: 0
+      };
+
+      function t(key) {
+        var pack = I18N[state.lang] || I18N.es;
+        return pack[key] !== undefined ? pack[key] : I18N.es[key] !== undefined ? I18N.es[key] : key;
+      }
+
+      function getModReplies() {
+        return [t("chat.mod0"), t("chat.mod1"), t("chat.mod2"), t("chat.mod3")];
+      }
+
+      function nfLocale(lang, cur) {
+        if (cur === "EUR") return lang === "en" ? "en-IE" : "es-ES";
+        if (cur === "GBP") return "en-GB";
+        if (cur === "USD") return lang === "en" ? "en-US" : "es-MX";
+        if (cur === "MXN") return "es-MX";
+        if (cur === "BRL") return "pt-BR";
+        if (cur === "CAD") return "en-CA";
+        if (cur === "AUD") return "en-AU";
+        if (cur === "COP") return "es-CO";
+        if (cur === "PLN") return "pl-PL";
+        if (cur === "CHF") return "de-CH";
+        if (cur === "JPY") return "ja-JP";
+        return lang === "en" ? "en-US" : "es-ES";
+      }
+
+      function formatMoney(amountEur, currency) {
+        if (currency === "EUR") {
+          return new Intl.NumberFormat(nfLocale(state.lang, "EUR"), {
+            style: "currency",
+            currency: "EUR",
+            maximumFractionDigits: 0,
+            minimumFractionDigits: 0
+          }).format(amountEur);
+        }
+        var table = state.rates || FALLBACK_RATES;
+        var r = table[currency];
+        if (!r || !isFinite(r)) r = 1;
+        var converted = amountEur * r * (1 + FX_BUFFER);
+        var digits = currency === "JPY" || currency === "COP" ? 0 : 2;
+        return new Intl.NumberFormat(nfLocale(state.lang, currency), {
+          style: "currency",
+          currency: currency,
+          maximumFractionDigits: digits,
+          minimumFractionDigits: digits
+        }).format(converted);
+      }
+
+      function applyPrices() {
+        var hourly = t("pricing.hourSuffix");
+        document.querySelectorAll(".js-price-range").forEach(function (el) {
+          var mn = parseFloat(el.getAttribute("data-min"), 10);
+          var mx = parseFloat(el.getAttribute("data-max"), 10);
+          var isH = el.getAttribute("data-hourly") === "1";
+          if (!isFinite(mn) || !isFinite(mx)) return;
+          var a = formatMoney(mn, state.currency);
+          var b = formatMoney(mx, state.currency);
+          el.textContent = isH ? a + " – " + b + " " + hourly : a + " – " + b;
+        });
+        var hint = document.getElementById("pricing-fx-hint");
+        if (hint) hint.textContent = t("pricing.fxHint");
+      }
+
+      function applyI18n() {
+        document.documentElement.lang = state.lang === "en" ? "en" : "es";
+        document.title = t("doc.title");
+        var meta = document.getElementById("meta-desc");
+        if (meta) meta.setAttribute("content", t("doc.desc"));
+
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          if (el.id === "fx-status-pill") return;
+          var key = el.getAttribute("data-i18n");
+          if (key) el.textContent = t(key);
+        });
+        document.querySelectorAll("[data-i18n-alt]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n-alt");
+          if (key) el.setAttribute("alt", t(key));
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n-placeholder");
+          if (key) el.setAttribute("placeholder", t(key));
+        });
+        document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+          var key = el.getAttribute("data-i18n-aria");
+          if (key) el.setAttribute("aria-label", t(key));
+        });
+
+        refreshFxPill();
+
+        var pm = document.getElementById("pricing-mailto");
+        if (pm) {
+          pm.setAttribute("href", "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(t("pricing.mailSubject")));
+          pm.textContent = t("pricing.footerBtn");
+        }
+
+        var fab = document.getElementById("chat-fab");
+        if (fab) fab.setAttribute("title", t("chat.fabTitle"));
+
+        applyPrices();
+      }
+
+      function cloneRates(src) {
+        var o = {};
+        if (!src) return o;
+        FX_CURRENCIES.forEach(function (c) {
+          if (src[c] != null && isFinite(src[c])) o[c] = src[c];
+        });
+        return o;
+      }
+
+      function ratesDiffer(prev, next) {
+        if (!prev || !next) return true;
+        return FX_CURRENCIES.some(function (c) {
+          var x = prev[c];
+          var y = next[c];
+          if (x == null || y == null) return true;
+          var tol = Math.max(1e-9 * Math.abs(y), 1e-12);
+          return Math.abs(x - y) > tol;
+        });
+      }
+
+      function refreshFxPill(opts) {
+        opts = opts || {};
+        var pill = document.getElementById("fx-status-pill");
+        if (!pill) return;
+        if (!state.rates) {
+          pill.textContent = t("locale.fxLoading");
+          return;
+        }
+        var timeStr = state.lastFetchTime
+          ? new Date(state.lastFetchTime).toLocaleTimeString(state.lang === "en" ? "en" : "es", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit"
+            })
+          : "—";
+        var sec = String(Math.round(FX_POLL_MS / 1000));
+        var livePart = t("locale.fxLive").replace("{sec}", sec).replace("{time}", timeStr);
+        var baseKey = state.liveOk ? "locale.fxOk" : "locale.fxFallback";
+        pill.textContent = t(baseKey).replace("{date}", state.rateDate || "—").replace("{live}", livePart);
+        pill.classList.toggle("is-warn", !state.liveOk);
+        if (opts.flash) {
+          pill.classList.remove("fx-updated");
+          void pill.offsetWidth;
+          pill.classList.add("fx-updated");
+        }
+      }
+
+      function fetchRatesOnce() {
+        return fetch("https://api.frankfurter.app/latest?from=EUR&to=" + FX_CURRENCIES.join(","))
+          .then(function (r) {
+            if (!r.ok) throw new Error("fx");
+            return r.json();
+          })
+          .then(function (data) {
+            var incoming = cloneRates(data.rates);
+            if (Object.keys(incoming).length === 0) throw new Error("fxempty");
+            var prev = state.rates ? cloneRates(state.rates) : null;
+            var changed = ratesDiffer(prev, incoming);
+            state.rates = incoming;
+            state.rateDate = data.date || "";
+            state.liveOk = true;
+            state.lastFetchTime = Date.now();
+            return changed;
+          })
+          .catch(function () {
+            var fb = cloneRates(FALLBACK_RATES);
+            var prev = state.rates ? cloneRates(state.rates) : null;
+            var changed = ratesDiffer(prev, fb);
+            state.rates = fb;
+            state.rateDate = "";
+            state.liveOk = false;
+            state.lastFetchTime = Date.now();
+            return changed;
+          });
+      }
+
+      function refreshRatesLoop() {
+        if (document.visibilityState !== "visible") return;
+        fetchRatesOnce().then(function (changed) {
+          refreshFxPill({ flash: changed });
+          if (changed) applyPrices();
+        });
+      }
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      (function () {
+        var modal = document.getElementById("pricing-modal");
+        var closeBtn = document.getElementById("pricing-modal-close");
+        var openers = document.querySelectorAll(".js-open-pricing");
+        var lastFocus = null;
+
+        function openPricing() {
+          lastFocus = document.activeElement;
+          modal.classList.add("is-open");
+          modal.setAttribute("aria-hidden", "false");
+          document.body.classList.add("is-modal-open");
+          applyPrices();
+          closeBtn.focus();
+        }
+
+        function closePricing() {
+          modal.classList.remove("is-open");
+          modal.setAttribute("aria-hidden", "true");
+          document.body.classList.remove("is-modal-open");
+          if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+        }
+
+        openers.forEach(function (el) {
+          el.addEventListener("click", function (e) {
+            e.preventDefault();
+            openPricing();
+          });
+        });
+
+        closeBtn.addEventListener("click", closePricing);
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) closePricing();
+        });
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && modal.classList.contains("is-open")) closePricing();
+        });
+      })();
+
+      (function () {
+        var FAB = document.getElementById("chat-fab");
+        var panel = document.getElementById("chat-panel");
+        var closeChat = document.getElementById("chat-close");
+        var box = document.getElementById("chat-messages");
+        var form = document.getElementById("chat-form");
+        var input = document.getElementById("chat-input");
+        var mailBtn = document.getElementById("chat-send-mail");
+        var STORAGE_KEY = "avs_chat_v2";
+        var welcomeShown = false;
+
+        function persistLog() {
+          try {
+            var data = [];
+            box.querySelectorAll(".chat-row").forEach(function (row) {
+              var txt = row.querySelector(".chat-bubble");
+              if (txt) data.push({ u: row.classList.contains("chat-row--user"), t: txt.textContent.trim() });
+            });
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          } catch (err) {}
+        }
+
+        function appendBubble(text, isUser, skipPersist) {
+          var row = document.createElement("div");
+          row.className = "chat-row " + (isUser ? "chat-row--user" : "chat-row--mod");
+          var b = document.createElement("div");
+          b.className = "chat-bubble " + (isUser ? "chat-bubble--user" : "chat-bubble--mod");
+          b.textContent = text;
+          var meta = document.createElement("div");
+          meta.className = "chat-meta";
+          var timeStr = new Date().toLocaleTimeString(state.lang === "en" ? "en" : "es", { hour: "2-digit", minute: "2-digit" });
+          meta.textContent = (isUser ? t("chat.metaYou") : t("chat.metaMod")) + " · " + timeStr;
+          row.appendChild(b);
+          row.appendChild(meta);
+          box.appendChild(row);
+          box.scrollTop = box.scrollHeight;
+          if (!skipPersist) persistLog();
+        }
+
+        function restoreLog() {
+          try {
+            var raw = sessionStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            var data = JSON.parse(raw);
+            if (!Array.isArray(data) || data.length === 0) return;
+            box.innerHTML = "";
+            data.forEach(function (item) {
+              if (item && typeof item.t === "string") appendBubble(item.t, !!item.u, true);
+            });
+            welcomeShown = true;
+            persistLog();
+          } catch (e) {}
+        }
+
+        function showWelcomeOnce() {
+          if (welcomeShown) return;
+          welcomeShown = true;
+          appendBubble(t("chat.welcome"), false);
+        }
+
+        function setOpen(open) {
+          panel.classList.toggle("is-open", open);
+          FAB.setAttribute("aria-expanded", open ? "true" : "false");
+          if (open) {
+            showWelcomeOnce();
+            input.focus();
+            FAB.classList.remove("has-unread");
+          }
+        }
+
+        function scheduleModReply() {
+          var delay = 1400 + Math.random() * 1600;
+          var replies = getModReplies();
+          setTimeout(function () {
+            var i = Math.floor(Math.random() * replies.length);
+            appendBubble(replies[i], false);
+            if (!panel.classList.contains("is-open")) FAB.classList.add("has-unread");
+          }, delay);
+        }
+
+        restoreLog();
+
+        FAB.addEventListener("click", function () {
+          setOpen(!panel.classList.contains("is-open"));
+        });
+        closeChat.addEventListener("click", function () {
+          setOpen(false);
+        });
+
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var msg = (input.value || "").trim();
+          if (!msg) return;
+          appendBubble(msg, true);
+          input.value = "";
+          scheduleModReply();
+        });
+
+        mailBtn.addEventListener("click", function () {
+          var lines = [];
+          box.querySelectorAll(".chat-row").forEach(function (row) {
+            var lab = row.classList.contains("chat-row--user") ? t("chat.labelClient") : t("chat.labelMod");
+            var tx = row.querySelector(".chat-bubble");
+            if (tx) lines.push(lab + ": " + tx.textContent.trim());
+          });
+          var body = lines.length ? lines.join("\n\n") : t("chat.emptyTranscript");
+          var url = "mailto:" + encodeURIComponent(CONTACT_EMAIL) + "?subject=" + encodeURIComponent(t("chat.mailSubject")) + "&body=" + encodeURIComponent(body);
+          window.location.href = url;
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && panel.classList.contains("is-open")) setOpen(false);
+        });
+      })();
+
+      (function initLocale() {
+        try {
+          var sl = localStorage.getItem(LS_LANG);
+          var sc = localStorage.getItem(LS_CUR);
+          if (sl === "en" || sl === "es") state.lang = sl;
+          if (sc && /^[A-Z]{3}$/.test(sc)) state.currency = sc;
+        } catch (e) {}
+
+        var langSel = document.getElementById("lang-select");
+        var curSel = document.getElementById("currency-select");
+        if (!langSel || !curSel) return;
+
+        [["es", "Español"], ["en", "English"]].forEach(function (o) {
+          var opt = document.createElement("option");
+          opt.value = o[0];
+          opt.textContent = o[1];
+          langSel.appendChild(opt);
+        });
+        langSel.value = state.lang;
+
+        var curs = ["EUR", "USD", "GBP", "MXN", "COP", "BRL", "CHF", "CAD", "AUD", "PLN", "JPY"];
+        curs.forEach(function (c) {
+          var opt = document.createElement("option");
+          opt.value = c;
+          opt.textContent = c;
+          curSel.appendChild(opt);
+        });
+        if (curs.indexOf(state.currency) < 0) state.currency = "EUR";
+        curSel.value = state.currency;
+
+        refreshFxPill();
+
+        langSel.addEventListener("change", function () {
+          state.lang = langSel.value;
+          try {
+            localStorage.setItem(LS_LANG, state.lang);
+          } catch (e) {}
+          applyI18n();
+        });
+
+        curSel.addEventListener("change", function () {
+          state.currency = curSel.value;
+          try {
+            localStorage.setItem(LS_CUR, state.currency);
+          } catch (e) {}
+          applyPrices();
+          refreshFxPill();
+        });
+
+        fetchRatesOnce().then(function () {
+          applyI18n();
+        });
+
+        if (fxPollTimer) clearInterval(fxPollTimer);
+        fxPollTimer = setInterval(refreshRatesLoop, FX_POLL_MS);
+
+        document.addEventListener("visibilitychange", function () {
+          if (document.visibilityState === "visible") {
+            refreshRatesLoop();
+          }
+        });
+      })();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración — Alpha Visual Studio</title>
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/platform.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html"><img class="logo-mark" src="assets/logo-icon.png" alt="" width="36" height="36"><span class="logo-wordmark">Alpha<span>Visual</span> Studio</span></a>
+      <div class="header-actions">
+        <button type="button" class="theme-toggle" aria-label="Tema">☾</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="logout">Salir</button>
+      </div>
+    </div>
+  </header>
+  <div class="dash-layout">
+    <aside class="dash-side">
+      <a href="#stats" class="is-active">Resumen</a>
+      <a href="#users">Usuarios</a>
+      <a href="#coupons">Cupones</a>
+      <a href="#orders">Pedidos</a>
+      <a href="#tasks">Tareas</a>
+      <a href="#quotes">Presupuestos</a>
+      <a href="#tickets">Tickets</a>
+      <a href="#schedule">Horario</a>
+      <a href="#portfolio">Portfolio</a>
+    </aside>
+    <div class="dash-main">
+      <h1 style="font-family:var(--font-display);">Panel administrador</h1>
+
+      <section id="stats" style="margin-top:1.5rem;">
+        <div class="stat-grid" id="stat-grid"></div>
+      </section>
+
+      <section id="users" style="margin-top:2rem;">
+        <h2 style="font-size:1.1rem;">Crear usuario / trabajador</h2>
+        <div class="form-panel" style="margin-top:0.75rem;max-width:480px;">
+          <form id="user-form">
+            <label>Email</label><input name="email" type="email" required>
+            <label>Contraseña</label><input name="password" type="password" required minlength="8">
+            <label>Nombre</label><input name="name" required>
+            <label>Rol</label>
+            <select name="role"><option value="client">Cliente</option><option value="worker">Trabajador</option><option value="admin">Admin</option></select>
+            <label>Rol interno (solo trabajador)</label>
+            <select name="worker_role">
+              <option value="">—</option>
+              <option value="video_editor">Editor video</option>
+              <option value="graphic_designer">Diseñador</option>
+              <option value="config_tech">Técnico configs</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Crear</button>
+          </form>
+          <p id="user-msg" style="margin-top:0.75rem;font-size:0.85rem;color:var(--accent);"></p>
+        </div>
+        <table class="dash-table" id="users-table"><thead><tr><th>Email</th><th>Nombre</th><th>Rol</th><th>Interno</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="coupons" style="margin-top:2rem;">
+        <h2 style="font-size:1.1rem;">Cupones</h2>
+        <div class="form-panel" style="margin-top:0.75rem;max-width:480px;">
+          <form id="coupon-form">
+            <label>Código</label><input name="code" required placeholder="VERANO20">
+            <label>Tipo</label>
+            <select name="discount_type"><option value="percent">%</option><option value="fixed_eur">€ fijos</option></select>
+            <label>Valor</label><input name="discount_value" type="number" step="0.01" required>
+            <label>Máx. usos (vacío = ilimitado)</label><input name="max_uses" type="number">
+            <button type="submit" class="btn btn-primary">Añadir</button>
+          </form>
+        </div>
+        <table class="dash-table" id="coupons-table"><thead><tr><th>Código</th><th>Tipo</th><th>Valor</th><th>Usos</th><th>Activo</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="orders" style="margin-top:2rem;">
+        <h2 style="font-size:1.1rem;">Pedidos</h2>
+        <table class="dash-table" id="orders-table"><thead><tr><th>Factura</th><th>Cliente</th><th>Total</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="tasks" style="margin-top:2rem;">
+        <h2 style="font-size:1.1rem;">Tareas (asignar trabajador)</h2>
+        <p style="font-size:0.85rem;color:var(--muted);">Trabajadores deben existir con rol editor/diseñador/técnico.</p>
+        <table class="dash-table" id="tasks-table"><thead><tr><th>Título</th><th>Pedido</th><th>Estado</th><th>Asignado</th><th></th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="quotes" style="margin-top:2rem;">
+        <h2 style="font-size:1.1rem;">Presupuestos recibidos</h2>
+        <table class="dash-table" id="quotes-table"><thead><tr><th>Fecha</th><th>Email</th><th>Servicio</th><th>Mensaje</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="tickets" style="margin-top:2rem;">
+        <h2 style="font-size:1.1rem;">Tickets</h2>
+        <table class="dash-table" id="tickets-table"><thead><tr><th>Email</th><th>Asunto</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="schedule" style="margin-top:2rem;">
+        <h2 style="font-size:1.1rem;">Horario público (JSON)</h2>
+        <textarea id="sched-json" style="width:100%;min-height:220px;font-family:monospace;font-size:0.8rem;padding:0.75rem;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);"></textarea>
+        <button type="button" class="btn btn-primary" id="save-sched" style="margin-top:0.75rem;">Guardar horario</button>
+        <p id="sched-msg" style="margin-top:0.5rem;font-size:0.85rem;"></p>
+      </section>
+
+      <section id="portfolio" style="margin-top:2rem;padding-bottom:3rem;">
+        <h2 style="font-size:1.1rem;">Subir al portfolio</h2>
+        <form id="port-form" style="margin-top:0.75rem;max-width:420px;">
+          <label>Título</label><input name="title" required>
+          <label>Tipo</label>
+          <select name="media_type"><option value="image">Imagen</option><option value="video">Video</option></select>
+          <label>Archivo</label><input name="file" type="file" required>
+          <button type="submit" class="btn btn-primary">Subir</button>
+        </form>
+        <table class="dash-table" id="port-table" style="margin-top:1rem;"><thead><tr><th>Título</th><th>Tipo</th><th></th></tr></thead><tbody></tbody></table>
+      </section>
+    </div>
+  </div>
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script>
+    (function () {
+      var u = AVS.getUser();
+      if (!u || u.role !== "admin") { window.location.href = "login.html"; return; }
+
+      function eur(n) { return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(n); }
+
+      document.getElementById("logout").addEventListener("click", function () {
+        AVS.setSession(null, null);
+        window.location.href = "index.html";
+      });
+
+      function loadStats() {
+        AVS.api("/api/admin/stats").then(function (s) {
+          var g = document.getElementById("stat-grid");
+          g.innerHTML =
+            "<div class='stat-card'><strong>" + s.clients + "</strong><span>Clientes</span></div>" +
+            "<div class='stat-card'><strong>" + s.ordersTotal + "</strong><span>Pedidos</span></div>" +
+            "<div class='stat-card'><strong>" + eur(s.revenue) + "</strong><span>Facturación acumulada</span></div>" +
+            "<div class='stat-card'><strong>" + s.pendingTasks + "</strong><span>Tareas abiertas</span></div>" +
+            "<div class='stat-card'><strong>" + s.openTickets + "</strong><span>Tickets abiertos</span></div>";
+        }).catch(function () {});
+      }
+
+      function loadUsers() {
+        AVS.api("/api/admin/users").then(function (rows) {
+          var tb = document.querySelector("#users-table tbody");
+          tb.innerHTML = "";
+          rows.forEach(function (r) {
+            var tr = document.createElement("tr");
+            tr.innerHTML = "<td>" + r.email + "</td><td>" + r.name + "</td><td>" + r.role + "</td><td>" + (r.worker_role || "—") + "</td>";
+            tb.appendChild(tr);
+          });
+        }).catch(function () {});
+      }
+
+      document.getElementById("user-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var fd = new FormData(e.target);
+        var body = {
+          email: fd.get("email"),
+          password: fd.get("password"),
+          name: fd.get("name"),
+          role: fd.get("role"),
+          worker_role: fd.get("worker_role") || null
+        };
+        var msg = document.getElementById("user-msg");
+        AVS.api("/api/admin/users", { method: "POST", body: body })
+          .then(function () { msg.textContent = "Usuario creado."; loadUsers(); e.target.reset(); })
+          .catch(function (err) { msg.textContent = err.message; });
+      });
+
+      function loadCoupons() {
+        AVS.api("/api/admin/coupons").then(function (rows) {
+          var tb = document.querySelector("#coupons-table tbody");
+          tb.innerHTML = "";
+          rows.forEach(function (c) {
+            var tr = document.createElement("tr");
+            tr.innerHTML = "<td>" + c.code + "</td><td>" + c.discount_type + "</td><td>" + c.discount_value + "</td><td>" + c.used_count + (c.max_uses != null ? "/" + c.max_uses : "") + "</td><td>" + (c.active ? "sí" : "no") + "</td>";
+            tb.appendChild(tr);
+          });
+        }).catch(function () {});
+      }
+
+      document.getElementById("coupon-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var fd = new FormData(e.target);
+        AVS.api("/api/admin/coupons", {
+          method: "POST",
+          body: {
+            code: fd.get("code"),
+            discount_type: fd.get("discount_type"),
+            discount_value: fd.get("discount_value"),
+            max_uses: fd.get("max_uses") || null
+          }
+        }).then(function () { loadCoupons(); e.target.reset(); }).catch(alert);
+      });
+
+      function loadOrders() {
+        AVS.api("/api/admin/orders").then(function (rows) {
+          var tb = document.querySelector("#orders-table tbody");
+          tb.innerHTML = "";
+          rows.forEach(function (o) {
+            var tr = document.createElement("tr");
+            var sel = "<select data-oid='" + o.id + "' class='order-status'>" +
+              ["pending", "paid", "in_progress", "completed", "cancelled"].map(function (st) {
+                return "<option value='" + st + "'" + (o.status === st ? " selected" : "") + ">" + st + "</option>";
+              }).join("") + "</select>";
+            tr.innerHTML = "<td>" + o.invoice_number + "</td><td>" + o.user_email + "</td><td>" + eur(o.total_eur) + "</td><td>" + sel + "</td><td></td>";
+            tb.appendChild(tr);
+          });
+          tb.querySelectorAll(".order-status").forEach(function (sel) {
+            sel.addEventListener("change", function () {
+              AVS.api("/api/admin/orders/" + sel.getAttribute("data-oid"), { method: "PATCH", body: { status: sel.value } }).catch(alert);
+            });
+          });
+        }).catch(function () {});
+      }
+
+      var workers = [];
+      function loadWorkers(cb) {
+        AVS.api("/api/admin/users").then(function (rows) {
+          workers = rows.filter(function (r) { return r.role === "worker"; });
+          if (cb) cb();
+        }).catch(function () {});
+      }
+
+      function loadTasks() {
+        loadWorkers(function () {
+          AVS.api("/api/admin/tasks").then(function (rows) {
+            var tb = document.querySelector("#tasks-table tbody");
+            tb.innerHTML = "";
+            rows.forEach(function (t) {
+              var tr = document.createElement("tr");
+              var opts = "<option value=''>—</option>" + workers.map(function (w) {
+                return "<option value='" + w.id + "'" + (t.assigned_worker_id === w.id ? " selected" : "") + ">" + w.name + "</option>";
+              }).join("");
+              var stsel = "<select data-tid='" + t.id + "' class='task-st'>" +
+                ["pending", "in_progress", "done"].map(function (s) {
+                  return "<option value='" + s + "'" + (t.status === s ? " selected" : "") + ">" + s + "</option>";
+                }).join("") + "</select>";
+              tr.innerHTML = "<td>" + t.title + "</td><td>" + (t.invoice_number || t.order_id) + "</td><td>" + stsel + "</td><td><select data-tid='" + t.id + "' class='task-as'>" + opts + "</select></td><td><button type='button' class='btn btn-sm btn-primary task-save' data-tid='" + t.id + "'>OK</button></td>";
+              tb.appendChild(tr);
+            });
+            tb.querySelectorAll(".task-save").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                var id = btn.getAttribute("data-tid");
+                var row = btn.closest("tr");
+                var st = row.querySelector(".task-st").value;
+                var as = row.querySelector(".task-as").value;
+                AVS.api("/api/admin/tasks/" + id, {
+                  method: "PATCH",
+                  body: { status: st, assigned_worker_id: as ? parseInt(as, 10) : null }
+                }).then(function () { loadTasks(); loadOrders(); }).catch(alert);
+              });
+            });
+          }).catch(function () {});
+        });
+      }
+
+      function loadQuotes() {
+        AVS.api("/api/admin/quotes").then(function (rows) {
+          var tb = document.querySelector("#quotes-table tbody");
+          tb.innerHTML = "";
+          rows.forEach(function (q) {
+            var tr = document.createElement("tr");
+            tr.innerHTML = "<td>" + (q.created_at || "").slice(0, 16) + "</td><td>" + q.email + "</td><td>" + q.service_type + "</td><td style='max-width:240px;overflow:hidden;text-overflow:ellipsis'>" + q.message + "</td>";
+            tb.appendChild(tr);
+          });
+        }).catch(function () {});
+      }
+
+      function loadTickets() {
+        AVS.api("/api/admin/tickets").then(function (rows) {
+          var tb = document.querySelector("#tickets-table tbody");
+          tb.innerHTML = "";
+          rows.forEach(function (t) {
+            var tr = document.createElement("tr");
+            var sel = "<select data-tid='" + t.id + "'>" +
+              ["open", "in_progress", "closed"].map(function (s) {
+                return "<option value='" + s + "'" + (t.status === s ? " selected" : "") + ">" + s + "</option>";
+              }).join("") + "</select> <button type='button' class='btn btn-sm ticket-save' data-tid='" + t.id + "'>OK</button>";
+            tr.innerHTML = "<td>" + t.email + "</td><td>" + t.subject + "</td><td>" + sel + "</td><td></td>";
+            tb.appendChild(tr);
+          });
+          tb.querySelectorAll(".ticket-save").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              var id = btn.getAttribute("data-tid");
+              var st = btn.closest("tr").querySelector("select").value;
+              AVS.api("/api/admin/tickets/" + id, { method: "PATCH", body: { status: st } }).catch(alert);
+            });
+          });
+        }).catch(function () {});
+      }
+
+      fetch("/api/schedule").then(function (r) { return r.json(); }).then(function (d) {
+        document.getElementById("sched-json").value = JSON.stringify({ label_es: d.label_es, label_en: d.label_en, json_hours: d.json_hours }, null, 2);
+      }).catch(function () {});
+
+      document.getElementById("save-sched").addEventListener("click", function () {
+        var msg = document.getElementById("sched-msg");
+        try {
+          var o = JSON.parse(document.getElementById("sched-json").value);
+          AVS.api("/api/admin/schedule", { method: "PUT", body: { label_es: o.label_es, label_en: o.label_en, json_hours: o.json_hours } })
+            .then(function () { msg.textContent = "Guardado."; msg.style.color = "var(--accent)"; })
+            .catch(function (e) { msg.textContent = e.message; });
+        } catch (e) {
+          msg.textContent = "JSON inválido";
+        }
+      });
+
+      function loadPortfolio() {
+        AVS.api("/api/admin/portfolio").then(function (rows) {
+          var tb = document.querySelector("#port-table tbody");
+          tb.innerHTML = "";
+          rows.forEach(function (p) {
+            var tr = document.createElement("tr");
+            tr.innerHTML = "<td>" + p.title + "</td><td>" + p.media_type + "</td><td><button type='button' class='btn btn-ghost btn-sm' data-pid='" + p.id + "'>Eliminar</button></td>";
+            tb.appendChild(tr);
+          });
+          tb.querySelectorAll("[data-pid]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              if (!confirm("¿Eliminar?")) return;
+              AVS.api("/api/admin/portfolio/" + btn.getAttribute("data-pid"), { method: "DELETE" }).then(loadPortfolio).catch(alert);
+            });
+          });
+        }).catch(function () {});
+      }
+
+      document.getElementById("port-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var fd = new FormData(e.target);
+        var out = new FormData();
+        out.append("title", fd.get("title"));
+        out.append("media_type", fd.get("media_type"));
+        out.append("file", fd.get("file"));
+        fetch("/api/admin/portfolio", { method: "POST", headers: { Authorization: "Bearer " + AVS.getToken() }, body: out })
+          .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error); return j; }); })
+          .then(function () { loadPortfolio(); e.target.reset(); })
+          .catch(alert);
+      });
+
+      loadStats();
+      loadUsers();
+      loadCoupons();
+      loadOrders();
+      loadTasks();
+      loadQuotes();
+      loadTickets();
+      loadPortfolio();
+    })();
+  </script>
+</body>
+</html>

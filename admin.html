@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administrador — AlphaVisualStudi</title>
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07080c; --surface: #10131a; --border: rgba(255, 255, 255, 0.08);
+      --text: #e8eaef; --muted: #8b93a7; --accent: #ff2438;
+      --accent-soft: rgba(255, 36, 56, 0.15); --glow: rgba(255, 36, 56, 0.38);
+      --radius: 14px; --max: 1200px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Outfit", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+    .noise { pointer-events: none; position: fixed; inset: 0; opacity: 0.04; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); z-index: 0; }
+    header { position: relative; z-index: 100; backdrop-filter: blur(12px); background: rgba(7, 8, 12, 0.75); border-bottom: 1px solid var(--border); }
+    .header-inner { max-width: var(--max); margin: 0 auto; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .logo { display: inline-flex; align-items: center; gap: 0.65rem; font-family: "Syne", sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--text); text-decoration: none; }
+    .logo-mark { height: 2.35rem; width: auto; flex-shrink: 0; }
+    .logo-wordmark span { color: var(--accent); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.65rem 1.25rem; border-radius: 999px; font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.2s; border: none; }
+    .btn-primary { background: linear-gradient(135deg, #ff3d4f, #d6081c); color: #fff; box-shadow: 0 4px 24px var(--glow); text-decoration: none;}
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 32px var(--glow); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    main { position: relative; z-index: 1; flex: 1; padding: 2.5rem 1.5rem; max-width: var(--max); margin: 0 auto; width: 100%; display: grid; grid-template-columns: 240px 1fr; gap: 2rem; }
+    .sidebar a { display: block; padding: 0.75rem 1rem; color: var(--muted); text-decoration: none; border-radius: 8px; font-weight: 500; transition: background 0.2s; margin-bottom: 0.25rem; }
+    .sidebar a:hover, .sidebar a.active { background: var(--surface); color: var(--text); }
+    h1 { font-family: "Syne", sans-serif; font-size: 2rem; margin-bottom: 0.5rem; }
+    .panel-bg { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--muted); margin-bottom: 0.25rem; }
+    input, select, textarea { width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: inherit; margin-bottom: 1rem; }
+    
+    .table-responsive { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+    th, td { padding: 1rem; border-bottom: 1px solid var(--border); }
+    th { font-weight: 600; color: var(--muted); }
+    .badge { padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; background: var(--border); color: var(--text); }
+    
+    .task-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; }
+    .task-card h3 { font-size: 1.1rem; color: var(--accent); margin-bottom: 0.5rem; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <img class="logo-mark" src="assets/logo-icon.png">
+        <span class="logo-wordmark">Alpha<span>Visual</span> Studio</span>
+      </a>
+      <div><button class="btn btn-ghost" id="logout-btn">Salir</button></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="sidebar">
+      <a href="#" class="active" onclick="show('seccion-resumen', event)">Resumen</a>
+      <a href="#" onclick="show('seccion-usuarios', event)">Usuarios</a>
+      <a href="#" onclick="show('seccion-cupones', event)">Cupones</a>
+      <a href="#" onclick="show('seccion-pedidos', event)">Pedidos</a>
+      <a href="#" onclick="show('seccion-tareas', event)">Tareas</a>
+      <a href="#" onclick="show('seccion-presupuestos', event)">Presupuestos</a>
+      <a href="#" onclick="show('seccion-tickets', event)">Tickets</a>
+      <a href="#" onclick="show('seccion-horario', event)">Horario</a>
+      <a href="#" onclick="show('seccion-portfolio', event)">Portfolio</a>
+    </div>
+
+    <div class="content">
+      <div id="seccion-resumen" class="tab-content" style="display: block;">
+        <h1>Resumen</h1>
+        <div class="panel-bg">
+          <div class="grid-2" id="stat-grid" style="gap:2rem;"></div>
+        </div>
+      </div>
+
+      <div id="seccion-usuarios" class="tab-content" style="display: none;">
+        <h1>Crear Usuarios</h1>
+        <p style="color:var(--muted); margin-bottom:1rem;">Crea cuentas de empleado para que accedan al panel.</p>
+        <div class="panel-bg" style="max-width: 500px;">
+          <form id="user-form">
+            <label>Email del trabajador</label>
+            <input type="email" name="email" required placeholder="empleado@alphavisualstudio.local">
+            <label>Contraseña</label>
+            <input type="password" name="password" required>
+            <label>Nombre Completo</label>
+            <input type="text" name="name" required>
+            <label>Rol</label>
+            <select name="role">
+              <option value="worker">Trabajador</option>
+              <option value="admin">Administrador</option>
+              <option value="client">Cliente</option>
+            </select>
+            <label>Rol Específico (Solo trabajador)</label>
+            <select name="worker_role">
+              <option value="">(Ninguno)</option>
+              <option value="video_editor">Editor de Video</option>
+              <option value="graphic_designer">Diseñador Gráfico</option>
+              <option value="config_tech">Técnico de Configs</option>
+            </select>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Registrar Usuario</button>
+            <p id="user-msg" style="margin-top:1rem; font-size:0.9rem;"></p>
+          </form>
+        </div>
+        <div class="panel-bg">
+          <h2>Todos los Usuarios</h2>
+          <div class="table-responsive">
+            <table id="users-table">
+              <thead><tr><th>Email</th><th>Nombre</th><th>Rol</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="seccion-cupones" class="tab-content" style="display: none;">
+        <h1>Cupones</h1>
+        <div class="panel-bg table-responsive">
+          <table id="coupons-table"><thead><tr><th>Código</th><th>Tipo</th><th>Valor</th><th>Usos</th><th>Activo</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+
+      <div id="seccion-pedidos" class="tab-content" style="display: none;">
+        <h1>Pedidos Vivos</h1>
+        <div class="panel-bg table-responsive">
+          <table id="orders-table"><thead><tr><th>Factura</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+
+      <div id="seccion-tareas" class="tab-content" style="display: none;">
+        <h1>Gestión de Tareas</h1>
+        <p style="color:var(--muted); margin-bottom:1rem;">Sube los recursos iniciales, ajusta plazos y da feedback de revisión a tus trabajadores.</p>
+        <div id="tasks-container">Cargando tareas...</div>
+      </div>
+
+      <div id="seccion-presupuestos" class="tab-content" style="display: none;">
+        <h1>Presupuestos Recibidos</h1>
+        <div class="panel-bg table-responsive">
+          <table id="quotes-table"><thead><tr><th>Fecha</th><th>Email</th><th>Email Admin</th><th>Mensaje</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+
+      <div id="seccion-tickets" class="tab-content" style="display: none;">
+        <h1>Tickets de Soporte</h1>
+        <div class="panel-bg table-responsive">
+          <table id="tickets-table"><thead><tr><th>Email</th><th>Asunto</th><th>Estado</th><th></th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+
+      <div id="seccion-horario" class="tab-content" style="display: none;">
+        <h1>Horario (JSON)</h1>
+        <div class="panel-bg">
+           <textarea id="sched-json" style="min-height:200px; font-family:monospace;"></textarea>
+        </div>
+      </div>
+
+      <div id="seccion-portfolio" class="tab-content" style="display: none;">
+        <h1>Portfolio</h1>
+        <div class="panel-bg">
+           <p style="color:var(--muted)">Sistema de portfolio activado.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const token = localStorage.getItem("avs_token");
+    if(!token) window.location.href = "login.html";
+
+    function show(id, evt) {
+      if(evt) evt.preventDefault();
+      document.querySelectorAll('.tab-content').forEach(e => e.style.display = 'none');
+      document.querySelectorAll('.sidebar a').forEach(e => e.classList.remove('active'));
+      document.getElementById(id).style.display = 'block';
+      if(evt) evt.target.classList.add('active');
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      localStorage.clear(); window.location.href = "login.html";
+    });
+
+    async function api(path, req = {}) {
+      req.headers = req.headers || {};
+      if(token && !req.headers.Authorization) req.headers.Authorization = "Bearer " + token;
+      if(!req.body || typeof req.body === 'string') req.headers["Content-Type"] = "application/json";
+      const res = await fetch(path, req);
+      const json = await res.json();
+      if(!res.ok) throw new Error(json.error || "Error");
+      return json;
+    }
+
+    document.getElementById("user-form").addEventListener("submit", async(e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const msg = document.getElementById("user-msg");
+      try {
+        await api("/api/admin/users", { method: "POST", body: JSON.stringify(Object.fromEntries(fd)) });
+        msg.textContent = "Usuario creado exitosamente."; msg.style.color = "#2ecc71";
+        e.target.reset(); loadUsers();
+      } catch(err) { msg.textContent = err.message; msg.style.color = "var(--accent)"; }
+    });
+
+    async function loadStats() {
+      try {
+        const s = await api("/api/admin/stats");
+        document.getElementById("stat-grid").innerHTML = `
+           <div><h3>${s.clients}</h3><span style="color:var(--muted)">Clientes Registrados</span></div>
+           <div><h3>${s.revenue}€</h3><span style="color:var(--muted)">Facturación</span></div>
+           <div><h3>${s.pendingTasks}</h3><span style="color:var(--muted)">Tareas Abiertas</span></div>
+           <div><h3>${s.openTickets}</h3><span style="color:var(--muted)">Tickets Abiertos</span></div>
+        `;
+      } catch(e) {}
+    }
+
+    async function loadUsers() {
+      try {
+        const rows = await api("/api/admin/users");
+        document.querySelector("#users-table tbody").innerHTML = rows.map(r => `<tr><td>${r.email}</td><td>${r.name}</td><td><span class="badge">${r.role}</span></td></tr>`).join("");
+      } catch(e) {}
+    }
+
+    async function loadAllAux() {
+      try { const c = await api("/api/admin/coupons"); document.querySelector("#coupons-table tbody").innerHTML = c.map(x=>`<tr><td>${x.code}</td><td>${x.discount_type}</td><td>${x.discount_value}</td><td>${x.used_count}</td><td>${x.active?'Si':'No'}</td></tr>`).join(""); } catch(e){}
+      try { const o = await api("/api/admin/orders"); document.querySelector("#orders-table tbody").innerHTML = o.map(x=>`<tr><td>${x.invoice_number}</td><td>${x.user_email}</td><td>${x.total_eur}€</td><td>${x.status}</td></tr>`).join(""); } catch(e){}
+      try { const q = await api("/api/admin/quotes"); document.querySelector("#quotes-table tbody").innerHTML = q.map(x=>`<tr><td>${x.created_at}</td><td>${x.email}</td><td>${x.service_type}</td><td>${x.message}</td></tr>`).join("");} catch(e){}
+      try { const t = await api("/api/admin/tickets"); document.querySelector("#tickets-table tbody").innerHTML = t.map(x=>`<tr><td>${x.email}</td><td>${x.subject}</td><td>${x.status}</td><td>-</td></tr>`).join("");} catch(e){}
+      try { const s = await fetch("/api/schedule").then(r=>r.json()); document.getElementById("sched-json").value = JSON.stringify(s, null, 2); } catch(e){}
+    }
+
+    let workers = [];
+    async function loadTasks() {
+      try {
+        if(!workers.length) {
+           const users = await api("/api/admin/users");
+           workers = users.filter(u => u.role === "worker");
+        }
+        const tasks = await api("/api/admin/tasks");
+        const c = document.getElementById("tasks-container");
+        c.innerHTML = tasks.length ? "" : "<p>No hay tareas registradas.</p>";
+        
+        tasks.forEach(t => {
+          const div = document.createElement("div"); div.className = "task-card";
+          let workerOpts = `<option value="">-- Sin asignar --</option>` + workers.map(w => `<option value="${w.id}" ${t.assigned_worker_id===w.id?'selected':''}>${w.name}</option>`).join("");
+          let statusLabel = (t.status === "done") ? `<span style="color:#2ecc71">Completado por el trabajador</span>` : `Estado: ${t.status}`;
+          let resultLink = t.result_file_path ? `<a href="/uploads/${t.result_file_path}" target="_blank" style="color:#2ecc71;">📥 Descargar Archivo Entregado</a>` : "<span style='color:var(--muted)'>Aún no entregado</span>";
+
+          div.innerHTML = `
+            <h3>${t.title} (Pedido ${t.invoice_number})</h3>
+            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1rem;">${statusLabel} | Progreso: <b>${t.progress_percentage || 0}%</b></p>
+            
+            <div class="grid-2">
+              <div>
+                <label>Asignar Trabajador</label>
+                <select class="task-worker" data-tid="${t.id}">${workerOpts}</select>
+                
+                <label>Comisión del Trabajador (%)</label>
+                <input type="number" class="task-comm" data-tid="${t.id}" value="${t.commission_percentage || ''}" placeholder="Ej: 50">
+                
+                <label>Feedback o Revisión</label>
+                <textarea class="task-feed" data-tid="${t.id}" rows="2" placeholder="Ej: Revisa la corrección de color...">${t.admin_feedback || ''}</textarea>
+                
+                <button class="btn btn-ghost update-task" data-tid="${t.id}" style="width:100%; padding: 0.5rem;">Guardar Cambios</button>
+              </div>
+
+              <div style="border-left: 1px solid var(--border); padding-left: 1rem;">
+                <label>Fecha Límite</label>
+                <input type="date" class="task-dead" data-tid="${t.id}" value="${t.deadline_at || ''}">
+                
+                <label>Subir Archivo Base (Source)</label>
+                <form class="upload-source-form" data-tid="${t.id}" style="display:flex; gap:0.5rem; flex-direction:column;">
+                   <input type="file" name="file" required style="font-size:0.8rem; padding:0.5rem;">
+                   <button type="submit" class="btn btn-ghost" style="padding: 0.4rem;">Subir Base (Trabajador)</button>
+                   <p class="source-msg" style="font-size:0.8rem;"></p>
+                </form>
+                <div style="margin-top: 1rem; font-size: 0.9rem;">
+                  <p><b>Entrega Final del Trabajador:</b></p>
+                  ${resultLink}
+                </div>
+              </div>
+            </div>
+          `;
+          c.appendChild(div);
+        });
+
+        // Eventos
+        document.querySelectorAll(".update-task").forEach(btn => {
+           btn.addEventListener("click", async() => {
+              const tid = btn.getAttribute("data-tid"); const div = btn.closest(".task-card");
+              const payload = {
+                 assigned_worker_id: div.querySelector(".task-worker").value ? parseInt(div.querySelector(".task-worker").value) : null,
+                 commission_percentage: div.querySelector(".task-comm").value ? parseFloat(div.querySelector(".task-comm").value) : null,
+                 admin_feedback: div.querySelector(".task-feed").value,
+                 deadline_at: div.querySelector(".task-dead").value
+              };
+              try {
+                btn.textContent = "Guardando...";
+                await api("/api/admin/tasks/" + tid, { method: "PATCH", body: JSON.stringify(payload) });
+                btn.textContent = "Guardado ✓"; setTimeout(() => btn.textContent = "Guardar Cambios", 2000);
+              } catch(e) { alert(e.message); btn.textContent = "Error"; }
+           });
+        });
+
+        document.querySelectorAll(".upload-source-form").forEach(form => {
+           form.addEventListener("submit", async(e) => {
+              e.preventDefault(); const tid = form.getAttribute("data-tid"); const msg = form.querySelector(".source-msg");
+              try {
+                 msg.textContent = "Subiendo...";
+                 const res = await fetch(`/api/admin/tasks/${tid}/source`, { method: "POST", headers: { "Authorization": "Bearer " + token }, body: new FormData(form) });
+                 if(!res.ok) throw new Error("Fallo");
+                 msg.textContent = "Subido correctamente."; msg.style.color = "#2ecc71";
+              } catch(e) { msg.textContent = "Error"; msg.style.color="var(--accent)"; }
+           });
+        });
+
+      } catch(e) {}
+    }
+
+    loadStats();
+    loadUsers();
+    loadAllAux();
+    loadTasks();
+  </script>
+</body>
+</html>

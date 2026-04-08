@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpha Visual Studio — Agencia digital · Jaén</title>
+  <meta name="description" content="Alpha Visual Studio: diseño gráfico, edición de video y configuraciones para creadores y empresas. Jaén, España.">
+  <link rel="icon" href="assets/logo-icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/platform.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="gradient-orb" aria-hidden="true"></div>
+
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="index.html">
+        <img class="logo-mark" src="assets/logo-icon.png" alt="" width="40" height="40" decoding="async">
+        <span class="logo-wordmark">Alpha<span>Visual</span> Studio</span>
+      </a>
+      <nav class="main-nav" aria-label="Principal">
+        <a href="#inicio" data-i18n="nav.home">Inicio</a>
+        <a href="#servicios" data-i18n="nav.services">Servicios</a>
+        <a href="#nosotros" data-i18n="nav.about">Nosotros</a>
+        <a href="portfolio.html" data-i18n="nav.portfolio">Portfolio</a>
+        <a href="#contacto" data-i18n="nav.contact">Contacto</a>
+        <a href="client.html" id="nav-client" class="js-auth-only" hidden data-i18n="nav.area">Mi área</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="lang-toggle" data-lang="es" aria-label="Español">ES</button>
+        <button type="button" class="lang-toggle" data-lang="en" aria-label="English">EN</button>
+        <button type="button" class="theme-toggle" aria-label="Tema">☾</button>
+        <a class="btn btn-ghost btn-sm" href="login.html" data-i18n="nav.login">Iniciar sesión</a>
+        <a class="btn btn-primary btn-sm" href="register.html" data-i18n="nav.register">Registro</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" class="hero">
+      <img class="hero-lockup" src="assets/logo-full.png" alt="" width="220" height="297" decoding="async" aria-hidden="true">
+      <p class="section-label" data-i18n="hero.label">Agencia digital · Jaén</p>
+      <h1 data-i18n="hero.h1">Impulsa tu contenido al siguiente nivel</h1>
+      <p class="lead" data-i18n="hero.lead">Servicios fijos en € para creadores y marcas: diseño, edición y configuraciones técnicas con un equipo cercano.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#servicios" data-i18n="hero.cta1">Ver servicios y precios</a>
+        <a class="btn btn-ghost" href="#contacto" data-i18n="hero.cta2">Pedir presupuesto</a>
+        <a class="btn btn-ghost js-auth-only" href="client.html" hidden data-i18n="hero.cta3">Ir al carrito</a>
+      </div>
+      <div class="meta-bar">
+        <div><strong>Jaén, ES</strong><span data-i18n="meta.loc">Presencial y remoto</span></div>
+        <div><strong data-i18n="meta.founderLabel">Fundador</strong><span>Juan Antonio · EditingAlpha</span></div>
+        <div><strong>€</strong><span data-i18n="meta.fx">Precios en euros (IVA según caso)</span></div>
+      </div>
+    </section>
+
+    <section id="servicios" aria-labelledby="servicios-title">
+      <p class="section-label" data-i18n="serv.label">Catálogo</p>
+      <h2 id="servicios-title" data-i18n="serv.h2">Servicios y precios fijos</h2>
+      <p style="color:var(--muted);max-width:48ch;margin-top:0.75rem;font-size:0.95rem;" data-i18n="serv.intro">Añade al carrito desde tu cuenta cliente y tramita el pedido. Tarifas por hora para trabajo a medida.</p>
+      <div id="services-mount" class="services-grid"></div>
+    </section>
+
+    <section id="nosotros" aria-labelledby="nosotros-title">
+      <p class="section-label" data-i18n="about.label">Nosotros</p>
+      <h2 id="nosotros-title" data-i18n="about.h2">Alpha Visual Studio</h2>
+      <div class="about-grid">
+        <div class="about-visual">
+          <img src="assets/logo-full.png" alt="" width="240" height="324" decoding="async" data-i18n-alt="about.imgAlt">
+        </div>
+        <div class="about-text">
+          <p data-i18n="about.p1">Somos una agencia digital en Jaén especializada en contenido visual y soporte técnico para creadores, streamers y empresas que quieren crecer con calidad.</p>
+          <p data-i18n="about.p2">El fundador, Juan Antonio —conocido en la comunidad como EditingAlpha, AlphaEditor o AlphaEditing— lidera un equipo que combina criterio creativo, rapidez y procesos claros para escalar tu producción.</p>
+          <p data-i18n="about.p3">Plataforma propia para pedidos, cupones, seguimiento de trabajadores y administración: todo integrado para que vendas y entregues con control.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="horario" aria-labelledby="horario-title">
+      <p class="section-label" data-i18n="sched.label">Horario</p>
+      <h2 id="horario-title" data-i18n="sched.h2">Atención al público</h2>
+      <p style="color:var(--muted);max-width:42ch;margin-top:0.5rem;font-size:0.92rem;" data-i18n="sched.note">Horario orientativo; el administrador puede actualizarlo desde el panel.</p>
+      <div class="schedule-block">
+        <p id="schedule-title" style="font-weight:700;margin-bottom:0.75rem;"></p>
+        <ul id="schedule-list"></ul>
+      </div>
+    </section>
+
+    <section id="contacto" aria-labelledby="contacto-title">
+      <p class="section-label" data-i18n="contact.label">Contacto</p>
+      <h2 id="contacto-title" data-i18n="contact.h2">Presupuesto y redes</h2>
+      <div class="contact-grid">
+        <div class="form-panel">
+          <h3 style="font-size:1rem;margin-bottom:1rem;" data-i18n="quote.h">Solicitud de presupuesto</h3>
+          <form id="quote-form">
+            <label data-i18n="quote.name">Nombre</label>
+            <input name="name" required autocomplete="name">
+            <label data-i18n="quote.email">Email</label>
+            <input name="email" type="email" required autocomplete="email">
+            <label data-i18n="quote.type">Tipo de servicio</label>
+            <select name="service_type" required id="quote-service-type"></select>
+            <label data-i18n="quote.msg">Explicación del proyecto</label>
+            <textarea name="message" required></textarea>
+            <label data-i18n="quote.files">Archivos (opcional, máx. 5)</label>
+            <input name="files" type="file" multiple>
+            <button type="submit" class="btn btn-primary" data-i18n="quote.send">Enviar</button>
+          </form>
+        </div>
+        <div class="form-panel">
+          <h3 style="font-size:1rem;margin-bottom:1rem;" data-i18n="ticket.h">Ticket de soporte</h3>
+          <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1rem;" data-i18n="ticket.p">Consulta rápida o incidencia; el equipo la verá en el panel.</p>
+          <form id="ticket-form">
+            <label>Email</label>
+            <input name="email" type="email" required>
+            <label data-i18n="ticket.sub">Asunto</label>
+            <input name="subject" required>
+            <label data-i18n="ticket.body">Mensaje</label>
+            <textarea name="body" required></textarea>
+            <button type="submit" class="btn btn-ghost" data-i18n="ticket.send">Abrir ticket</button>
+          </form>
+          <div class="social-links" style="margin-top:1.5rem;">
+            <p style="font-weight:600;margin-bottom:0.35rem;" data-i18n="social.h">Redes</p>
+            <a href="https://www.youtube.com" target="_blank" rel="noopener">YouTube</a>
+            <a href="https://www.instagram.com" target="_blank" rel="noopener">Instagram</a>
+            <a href="https://discord.com" target="_blank" rel="noopener">Discord</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Alpha Visual Studio · Jaén, España</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/theme.js"></script>
+  <script>
+    (function () {
+      var LS_LANG = "avs_lang";
+      var I18N = {
+        es: {
+          "nav.home": "Inicio", "nav.services": "Servicios", "nav.about": "Nosotros", "nav.portfolio": "Portfolio",
+          "nav.contact": "Contacto", "nav.area": "Mi área", "nav.login": "Iniciar sesión", "nav.register": "Registro",
+          "hero.label": "Agencia digital · Jaén",
+          "hero.h1": "Impulsa tu contenido al siguiente nivel",
+          "hero.lead": "Servicios fijos en € para creadores y marcas: diseño, edición y configuraciones técnicas con un equipo cercano.",
+          "hero.cta1": "Ver servicios y precios", "hero.cta2": "Pedir presupuesto", "hero.cta3": "Ir al carrito",
+          "meta.loc": "Presencial y remoto", "meta.founderLabel": "Fundador", "meta.fx": "Precios en euros (IVA según caso)",
+          "serv.label": "Catálogo", "serv.h2": "Servicios y precios fijos",
+          "serv.intro": "Añade al carrito desde tu cuenta cliente y tramita el pedido. Tarifas por hora para trabajo a medida.",
+          "cat.graphic": "Diseño gráfico", "cat.video": "Edición de video", "cat.config": "Configuraciones", "cat.hourly": "Precio por hora",
+          "about.label": "Nosotros", "about.h2": "Alpha Visual Studio", "about.imgAlt": "Logotipo Alpha Visual Studio",
+          "about.p1": "Somos una agencia digital en Jaén especializada en contenido visual y soporte técnico para creadores, streamers y empresas que quieren crecer con calidad.",
+          "about.p2": "El fundador, Juan Antonio —conocido en la comunidad como EditingAlpha, AlphaEditor o AlphaEditing— lidera un equipo que combina criterio creativo, rapidez y procesos claros para escalar tu producción.",
+          "about.p3": "Plataforma propia para pedidos, cupones, seguimiento de trabajadores y administración: todo integrado para que vendas y entregues con control.",
+          "sched.label": "Horario", "sched.h2": "Atención al público",
+          "sched.note": "Horario orientativo; el administrador puede actualizarlo desde el panel.",
+          "contact.label": "Contacto", "contact.h2": "Presupuesto y redes",
+          "quote.h": "Solicitud de presupuesto", "quote.name": "Nombre", "quote.email": "Email", "quote.type": "Tipo de servicio",
+          "quote.msg": "Explicación del proyecto", "quote.files": "Archivos (opcional)", "quote.send": "Enviar",
+          "ticket.h": "Ticket de soporte", "ticket.p": "Consulta rápida o incidencia; el equipo la verá en el panel.",
+          "ticket.sub": "Asunto", "ticket.body": "Mensaje", "ticket.send": "Abrir ticket",
+          "social.h": "Redes (enlaza las tuyas)", "addCart": "Añadir", "hour": "/ hora"
+        },
+        en: {
+          "nav.home": "Home", "nav.services": "Services", "nav.about": "About", "nav.portfolio": "Portfolio",
+          "nav.contact": "Contact", "nav.area": "My account", "nav.login": "Log in", "nav.register": "Sign up",
+          "hero.label": "Digital agency · Jaén",
+          "hero.h1": "Take your content to the next level",
+          "hero.lead": "Fixed € pricing for creators and brands: design, editing and technical setups with a close-knit team.",
+          "hero.cta1": "See services & prices", "hero.cta2": "Request a quote", "hero.cta3": "Go to cart",
+          "meta.loc": "On-site & remote", "meta.founderLabel": "Founder", "meta.fx": "Prices in EUR (VAT as applicable)",
+          "serv.label": "Catalogue", "serv.h2": "Services & fixed prices",
+          "serv.intro": "Add to cart from your client account and place the order. Hourly rates for custom work.",
+          "cat.graphic": "Graphic design", "cat.video": "Video editing", "cat.config": "Setups", "cat.hourly": "Hourly rate",
+          "about.label": "About", "about.h2": "Alpha Visual Studio", "about.imgAlt": "Alpha Visual Studio logo",
+          "about.p1": "We are a digital agency in Jaén focused on visual content and technical support for creators, streamers and companies that want to grow with quality.",
+          "about.p2": "Founder Juan Antonio —known in the community as EditingAlpha, AlphaEditor or AlphaEditing— leads a team that blends creative judgment, speed and clear processes.",
+          "about.p3": "Our own platform for orders, coupons, worker tracking and admin: integrated so you can sell and deliver with control.",
+          "sched.label": "Hours", "sched.h2": "Public schedule",
+          "sched.note": "Indicative hours; admins can update them from the dashboard.",
+          "contact.label": "Contact", "contact.h2": "Quote & social",
+          "quote.h": "Quote request", "quote.name": "Name", "quote.email": "Email", "quote.type": "Service type",
+          "quote.msg": "Project details", "quote.files": "Attachments (optional)", "quote.send": "Send",
+          "ticket.h": "Support ticket", "ticket.p": "Quick question or issue; the team sees it in the panel.",
+          "ticket.sub": "Subject", "ticket.body": "Message", "ticket.send": "Open ticket",
+          "social.h": "Social (link yours)", "addCart": "Add", "hour": "/ hr"
+        }
+      };
+
+      var lang = localStorage.getItem(LS_LANG) || "es";
+      function t(k) { return (I18N[lang] && I18N[lang][k]) || I18N.es[k] || k; }
+      function applyI18n() {
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          el.textContent = t(el.getAttribute("data-i18n"));
+        });
+        document.querySelectorAll("[data-i18n-alt]").forEach(function (el) {
+          el.setAttribute("alt", t(el.getAttribute("data-i18n-alt")));
+        });
+        document.documentElement.lang = lang;
+        document.querySelectorAll(".lang-toggle").forEach(function (b) {
+          b.classList.toggle("is-on", b.getAttribute("data-lang") === lang);
+        });
+      }
+
+      document.querySelectorAll(".lang-toggle").forEach(function (b) {
+        b.addEventListener("click", function () {
+          lang = b.getAttribute("data-lang");
+          localStorage.setItem(LS_LANG, lang);
+          applyI18n();
+          renderServices(window.__lastServices || []);
+        });
+      });
+
+      function toast(msg) {
+        var el = document.getElementById("toast");
+        el.textContent = msg;
+        el.classList.add("is-visible");
+        clearTimeout(el._t);
+        el._t = setTimeout(function () { el.classList.remove("is-visible"); }, 4200);
+      }
+
+      function fmtEur(n) {
+        return new Intl.NumberFormat(lang === "en" ? "en-IE" : "es-ES", { style: "currency", currency: "EUR" }).format(n);
+      }
+
+      function renderServices(list) {
+        window.__lastServices = list;
+        var mount = document.getElementById("services-mount");
+        var catOrder = ["graphic", "video", "config", "hourly"];
+        var catKey = { graphic: "cat.graphic", video: "cat.video", config: "cat.config", hourly: "cat.hourly" };
+        var by = {};
+        list.forEach(function (s) {
+          (by[s.category] = by[s.category] || []).push(s);
+        });
+        mount.innerHTML = "";
+        catOrder.forEach(function (c) {
+          var items = by[c];
+          if (!items || !items.length) return;
+          var h = document.createElement("h3");
+          h.className = "cat-title";
+          h.textContent = t(catKey[c]);
+          mount.appendChild(h);
+          items.forEach(function (s) {
+            var name = lang === "en" ? s.name_en : s.name_es;
+            var price = s.price_type === "hourly" ? fmtEur(s.price_eur) + t("hour") : fmtEur(s.price_eur);
+            var card = document.createElement("article");
+            card.className = "service-card";
+            card.innerHTML = "<h3><span></span><span class=\"price\"></span></h3><p></p><button type=\"button\" class=\"btn btn-primary btn-sm js-add\"></button>";
+            card.querySelector("h3 span:first-child").textContent = name;
+            card.querySelector(".price").textContent = price;
+            card.querySelector("p").textContent = s.price_type === "hourly" ? (lang === "en" ? "Billed per hour" : "Facturación por hora") : (lang === "en" ? "Fixed package" : "Precio cerrado");
+            var btn = card.querySelector(".js-add");
+            btn.textContent = t("addCart");
+            btn.addEventListener("click", function () {
+              var u = AVS.getUser();
+              if (!u || u.role !== "client") {
+                toast(lang === "en" ? "Register as a client to use the cart." : "Regístrate como cliente para usar el carrito.");
+                return;
+              }
+              AVS.api("/api/cart", { method: "POST", body: { serviceId: s.id, quantity: 1 } })
+                .then(function () { toast(lang === "en" ? "Added to cart" : "Añadido al carrito"); })
+                .catch(function (e) { toast(e.message); });
+            });
+            mount.appendChild(card);
+          });
+        });
+      }
+
+      function fillQuoteSelect(list) {
+        var sel = document.getElementById("quote-service-type");
+        if (!sel) return;
+        sel.innerHTML = "";
+        var opt0 = document.createElement("option");
+        opt0.value = "";
+        opt0.textContent = "—";
+        sel.appendChild(opt0);
+        list.forEach(function (s) {
+          var o = document.createElement("option");
+          o.value = lang === "en" ? s.name_en : s.name_es;
+          o.textContent = (lang === "en" ? s.name_en : s.name_es) + " — " + fmtEur(s.price_eur) + (s.price_type === "hourly" ? t("hour") : "");
+          sel.appendChild(o);
+        });
+      }
+
+      fetch("/api/services").then(function (r) { return r.json(); }).then(function (list) {
+        renderServices(list);
+        fillQuoteSelect(list);
+      }).catch(function () {});
+
+      fetch("/api/schedule").then(function (r) { return r.json(); }).then(function (d) {
+        var title = document.getElementById("schedule-title");
+        var ul = document.getElementById("schedule-list");
+        if (!title || !ul) return;
+        title.textContent = lang === "en" ? (d.label_en || "") : (d.label_es || "");
+        ul.innerHTML = "";
+        var days = (d.json_hours && d.json_hours.days) || [];
+        days.forEach(function (day) {
+          var li = document.createElement("li");
+          var lab = lang === "en" ? day.en : day.es;
+          li.innerHTML = "<span></span><span></span>";
+          li.children[0].textContent = lab || day.key;
+          li.children[1].textContent = day.hours || "—";
+          ul.appendChild(li);
+        });
+      }).catch(function () {});
+
+      document.getElementById("quote-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var fd = new FormData(e.target);
+        fetch("/api/quotes", { method: "POST", body: fd })
+          .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error); return j; }); })
+          .then(function () { toast(lang === "en" ? "Quote sent." : "Presupuesto enviado."); e.target.reset(); })
+          .catch(function (err) { toast(err.message); });
+      });
+
+      document.getElementById("ticket-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var fd = new FormData(e.target);
+        var body = { email: fd.get("email"), subject: fd.get("subject"), body: fd.get("body") };
+        AVS.api("/api/tickets", { method: "POST", body: body })
+          .then(function () { toast(lang === "en" ? "Ticket created." : "Ticket creado."); e.target.reset(); })
+          .catch(function (err) { toast(err.message); });
+      });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+      applyI18n();
+      (function authUi() {
+        var u = AVS.getUser();
+        document.querySelectorAll(".js-auth-only").forEach(function (el) {
+          el.hidden = !u || u.role !== "client";
+        });
+      })();
+    })();
+  </script>
+</body>
+</html>
